@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class HashmapDemo{
+	
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("idfnfd");
+		list.add("sdsdisds");
+		list.add("asasaa");
+		list.add("koko");
+		filter(list,'i');
+		for (String string : list) {
+			System.out.println(string);
+		}
+	}
+
+	private static void filter(List<String> list, char c) {
+		int i = 0; 
+		
+		while (i<list.size()) {
+			String string = list.get(i);
+				if (string.charAt(i)==c)
+				{
+					list.remove(i);
+				
+				}
+				else {
+					i++;
+				}
+			
+		}
+		
+	}
+
+}
