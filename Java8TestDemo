@@ -1,0 +1,348 @@
+package com.java8;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IntSummaryStatistics;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class Java8_demo {
+	//Unique records by id
+	    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+		Map<Object, Boolean> map = new ConcurrentHashMap<>();
+		return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+		}
+	    	
+public static void main(String[] args) {
+	
+	Employee employee1 = new Employee(101, "Kolle", 'M',new Date(), 200000.00f);
+	Employee employee2 = new Employee(103, "Sari",  'F',new Date(), 600000.00f);
+	Employee employee3 = new Employee(102, "tej",   'M',new Date(), 300000.00f);
+	Employee employee4 = new Employee(105, "pavan", 'M',new Date(), 900000.00f);
+	Employee employee5 = new Employee(104, "ramu",  'M',new Date(), 800000.00f);
+	
+		List<Employee>  list = new ArrayList<Employee>();
+		list.add(employee1);
+		list.add(employee2);
+		list.add(employee3);
+		list.add(employee4);
+		list.add(employee5);
+		
+		
+		Map<String, Employee>   map = new HashMap<String, Employee>();
+		map.put("employee_1", employee1);
+		map.put("employee_2", employee2);
+		map.put("employee_3", employee3);
+		map.put("employee_4", employee4);
+		map.put("employee_5", employee5);
+		
+		List<String> strList = new ArrayList<String>(Arrays.asList("Kolle", "Siddu",null,"Ramu", "Pavan", "Saritha","Kolle",null));
+		
+		Map<Integer, String> map1 = new HashMap<>();
+		map1.put(1, "linode.com");
+		map1.put(2, "heroku.com");
+		map1.put(3, "google.com");
+		map1.put(4, "yahoo.com");
+		
+		List<Integer> intList = new ArrayList<Integer>(); 
+		intList.add(1); 
+		intList.add(5); 
+		intList.add(6); 
+		intList.add(7); 
+		intList.add(8); 
+		intList.add(9); 
+		intList.add(10); 
+	
+		String[] strArr = {"java", "python", "node", null, "ruby", null, "php"};
+		Stream<String> language = Stream.of(strArr);
+		Stream<String> language_1 = Stream.of("java", "python", "node", "ruby", "php");
+		String[][] data = new String[][]{{"a", "b"}, {"c", "d"}, {"e", "f"}};
+		
+		String[] s1 = new String[]{"a", "b", "c"};
+        String[] s2 = new String[]{"d", "e", "f"};
+        String[] s3 = new String[]{"g", "h", "i"};
+        
+        int [] int1 = new int[]{1,2,3};
+        int[] int2 = new int[]{4,5,6};
+        int[] int3 = new int[]{7,8,9};
+
+
+	// for each statement with stream
+		list = list.stream().collect(Collectors.toList());
+		list.forEach(System.out::println);
+		
+		System.out.println("\n");
+	// for each statement with parallel stream
+		list = list.parallelStream().collect(Collectors.toList());
+		list.forEach(System.out::println);
+		System.out.println("\n");
+		
+	//Array to Stream
+		 Stream<String> stream1 = Arrays.stream(strArr);
+		 stream1.forEach(x -> System.out.println(x));
+		 
+	// reuse it to filter again! throws IllegalStateException
+	 	long count = stream1.filter(x -> "node".equals(x)).count();
+        System.out.println(count);//java.lang.IllegalStateException: stream has already been operated upon or closed
+		
+	//list to map
+		Map<Integer, String> map_1 = new HashMap<Integer, String>();
+		map_1 = list.stream().collect(Collectors.toMap(Employee::getId, Employee::getName));
+		System.out.println(map_1);
+		System.out.println("\n");
+		
+	//list to set
+		Set<Employee> set_1 = new HashSet<Employee>();
+		set_1 = list.stream().collect(Collectors.toSet());
+		System.out.println(set_1);
+		System.out.println("\n");
+		
+		    	
+     //convert map to list by values
+		List<Employee> mapToList = map.values().stream().collect(Collectors.toList());
+		for (Employee employee : mapToList) {
+			System.out.println(employee);
+		}
+		 
+	 //convert map to list by keys
+		List<String> mapToList1 = map.keySet().stream().collect(Collectors.toList());
+			for (String string : mapToList1) {
+				System.out.println(string);
+			}
+			
+	 //convert map to list by entry set
+			List<Entry<String, Employee>> mapToList2 = map.entrySet().stream().collect(Collectors.toList());
+			for (Entry<String, Employee> entry : mapToList2) {
+				System.out.println(entry);
+			}
+	//convert Stream to List
+		List<String> covertStreamToList = language.collect(Collectors.toList());
+		System.out.println(covertStreamToList);//[java, python, node, null, ruby, null, php]
+		
+	//comparing by name
+		List<Employee> listByname  = list.stream().sorted(Comparator.comparing(Employee::getName)).collect(Collectors.toList());
+		//list.stream().sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList());
+		for (Employee employee : listByname) {
+			System.out.println(employee.getName());
+		}
+		System.out.println("\n");
+		
+	//comparing by Id
+		List<Employee> listById = list.stream().sorted((o1, o2) -> o1.getId()-(o2.getId())).collect(Collectors.toList());
+		
+		for (Employee employee : listById) {
+			System.out.println(employee.getId());
+		}
+		System.out.println("\n");
+	
+	//reverse order by ID
+		list = list.stream().sorted(Comparator.comparingInt(Employee::getId).reversed()).collect(Collectors.toList());
+		//list.forEach(System.out::println);
+		list.forEach((s)->System.out.println(s));
+			
+	//count distinct elements
+		long l = list.stream().distinct().count();
+		System.out.println(l);
+	
+	//filter by salary
+	  	List<Employee> ff = list.stream().filter(p-> p.getSalary()>300000.00f).collect(Collectors.toList());
+		for (Employee employee : ff) {
+			System.out.println(employee.getSalary());
+		}
+		//	ff.forEach(System.out::println);
+		
+	//contains by tej
+		List<Employee> byEle = list.stream().filter(p->p.getName().contains("tej")).collect(Collectors.toList());
+		byEle.forEach(System.out::println);
+	
+    // Get distinct objects by key
+        List<Employee> distinctElements = list.stream().filter(distinctByKey(p -> p.getGender())).collect( Collectors.toList() );
+        for (Employee employee : distinctElements) {
+		System.out.println(employee.getGender());
+        }
+
+	//insert the records except Siddu
+		 List<String> result = strList.stream().filter((s)->!"Siddu".equals(s)).collect(Collectors.toList());
+		 result.forEach(System.out::println);
+		 
+		
+    //find "Kolle"
+		Employee findEmp = list.stream().filter(x-> "Kolle".equals(x.getName())).findAny().orElse(null);
+		System.out.println(findEmp);//kolle, if not match return null
+		
+			
+	//map--->convert names in uppercase
+		List<String> convertUpperCase = strList.stream().map(String::toUpperCase).collect(Collectors.toList());
+		System.out.println(convertUpperCase);//[KOLLE, SIDDU, RAMU, PAVAN, SARITHA]
+	
+		List<String> employee = list.stream().map(u->u.getName().toUpperCase()).collect(Collectors.toList());
+		System.out.println(employee);//[KOLLE, SARI, TEJ, PAVAN, RAMU]
+		
+	//Group By, Count and Sort
+		Map<String, Long> groupBy = strList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		System.out.println(groupBy);//{Ramu=1, Kolle=2, Pavan=1, Saritha=1, Siddu=1}
+		
+		Map<String, Long> finalMap = new LinkedHashMap<>();
+	    groupBy.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).forEachOrdered(e -> finalMap.put(e.getKey(), e.getValue()));
+		System.out.println(finalMap);//{Kolle=2, Ramu=1, Pavan=1, Saritha=1, Siddu=1}
+		
+		Map<String, Long> counting = list.stream().collect(Collectors.groupingBy(Employee::getName, Collectors.counting()));
+	    System.out.println(counting);//{ramu=1, Sari=1, Kolle=1, tej=1, pavan=1}
+
+	    Map<String, Double> sum = list.stream().collect(Collectors.groupingBy(Employee::getName, Collectors.summingDouble(Employee::getSalary)));
+	    System.out.println(sum);//{ramu=800000.0, Sari=600000.0, Kolle=200000.0, tej=300000.0, pavan=900000.0}
+
+	//romove null values for the list
+		List<String> removeNulls = strList.stream().filter(n->n!=null).collect(Collectors.toList());
+		System.out.println(removeNulls);//[Kolle, Siddu, Ramu, Pavan, Saritha, Kolle]
+
+		List<String> nonNulls = language.filter(Objects::nonNull).collect(Collectors.toList());
+		System.out.println(nonNulls);//[java, python, node, ruby, php]
+
+	//Map -> Stream -> Filter -> String
+		String result_1 = map1.entrySet().stream().filter(x -> "linode.com".equals(x.getValue())).map(x->x.getValue()).collect(Collectors.joining());
+		System.out.println(result_1);//linode.com
+		
+	//Map -> Stream -> Filter -> MAP
+		Map<Integer, String> collect1 = map1.entrySet().stream().filter(x -> x.getKey() == 2).collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
+		System.out.println(collect1);//{2=heroku.com}
+	// or like this
+		Map<Integer, String> collect2 = map1.entrySet().stream().filter(x -> x.getKey() == 3).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		System.out.println(collect2);//{3=google.com}
+
+	// flatmap---->>>Stream<String[]>, //Stream<String>, GOOD!
+			//    Stream.map() vs Stream.flatMap() in Java 8
+			//    The function you pass to map() operation returns a single value.
+			//    The function you pass to flatMap() opeartion returns a Stream of value.
+			//    flatMap() is combination of map and flat operation. 
+			//    map() is used for transformation only, but flatMap() is used for both transformation and flattening. 
+		 
+
+        Stream<String[]> temp = Arrays.stream(data);
+        Stream<String> stringStream = temp.flatMap(x -> Arrays.stream(x));
+        Stream<String> stream = stringStream.filter(x -> "a".equals(x.toString()));
+        stream.forEach(System.out::println);
+        //or
+        Stream<String> stream_3 = Arrays.stream(data).flatMap(x -> Arrays.stream(x)).filter(x -> "a".equals(x.toString()));
+        stream_3.forEach(System.out::println);
+				
+		
+	//Optional(C)--->Null checks are not required,No more NullPointerException at run-time,We can develop clean and neat APIs, No more Boiler plate code	
+		Optional<String> optional_1 = Optional.of("Male");
+		System.out.println(optional_1.get());//male
+		System.out.println(optional_1.isPresent());//true
+		Optional<String> emptyGender = Optional.empty();
+		System.out.println(emptyGender);//Optional.empty
+		Optional<String> optional_2 = null;
+		System.out.println(optional_2);//null
+			
+	//Java 8 Random.ints
+		Random r = new Random();
+		int iin = 0;
+		for (int i = 0; i < 5; i++) {
+		   iin = r.ints(1000, 2000).limit(1).findFirst().getAsInt();
+		 // System.out.print(iin+",");//1047,1861,1322,1728,1735,
+		}
+		//or
+		new Random().ints(10, 33, 38).forEach(System.out::println);//(range,min,max)
+		//or
+		 iin = r.ints(1000, 2000).limit(1).findFirst().getAsInt();
+		// System.out.println(iin);//1946
+
+ 	// Displaying the randomly generated values 
+        IntStream int_stream = IntStream.generate(() -> { return (int)(Math.random() * 10000); }); 
+        stream.limit(7).forEach(System.out::println); 
+
+	//read file into stream, try-with-resources, use Files.lines to read file as Stream.
+		 String fileName = "/Users/2006154/Downloads/sample.txt";
+		 try (Stream<String> file = Files.lines(Paths.get(fileName))) {
+				stream.forEach(System.out::println);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	
+	//Joiner example
+		String join_1 = String.join("-", strArr);
+		System.out.println(join_1);//java- python- node- null- ruby- null- php
+		String join_2 = String.join("-", "2015", "10", "31" );
+		System.out.println(join_2);//2015-10-31
+		String join_3 = strList.stream().map(x -> x).collect(Collectors.joining(" | "));
+		System.out.println(join_3);//Kolle | Siddu | null | Ramu | Pavan | Saritha | Kolle | null
+		String join_4 = list.stream().map(x -> x.getName()).collect(Collectors.joining(", ", "{", "}"));
+		System.out.println(join_4);
+        
+     //Join two are more arrays
+        String[] joinArr_1 = Stream.of(s1, s2, s3).flatMap(Stream::of).toArray(String[]::new);
+        System.out.println(Arrays.toString(joinArr_1));
+        int[] joinArr_2 = IntStream.concat(Arrays.stream(int1), Arrays.stream(int2)).toArray();
+        System.out.println(Arrays.toString(joinArr_2));
+        int[] joinArr_3 = IntStream.concat(Arrays.stream(int1),IntStream.concat(Arrays.stream(int2), Arrays.stream(int3))).toArray();
+        System.out.println(Arrays.toString(joinArr_3));
+
+    //anyMatch()
+        boolean anymatch = strList.stream().anyMatch(n -> n.equals("Kolle")); 
+        System.out.println(anymatch);//true
+        	
+    //noneMatch()
+        boolean nonMatch = strList.stream().noneMatch(n -> n.equals("Kolle")); 
+        System.out.println(nonMatch);//true
+        
+    // all match
+        boolean allMatch = language_1.allMatch(str -> str.length() > 2); 
+        System.out.println(allMatch); 
+  
+     //sum of a list 
+        int sum_2 = intList.stream().filter(i -> i > 5).mapToInt(i -> i).sum(); 
+        System.out.println(sum_2);
+     // findfirst 
+        Optional<Integer> findFirst  = intList.stream().findFirst(); 
+        System.out.println(findFirst.get());
+              
+       
+     // peek element
+        intList.stream().peek(System.out::println); //No output
+        intList.stream().peek(System.out::println).count(); //1 5 6 7 8 9 10
+ 
+     // counting
+        long count_int = language_1.collect(Collectors.counting()); 
+        System.out.println(count_int); 
+        
+     //skip() elememts
+        IntStream stream_2 = IntStream.range(1, 10); 
+        stream.skip(4).forEach(System.out::println); //5 6 7 8 9
+        
+     // IntStream summaryStatistics()
+        IntStream stream_5 = IntStream.of(4, 5, 6, 7); 
+        IntSummaryStatistics summary_data = stream_5.summaryStatistics(); 
+        System.out.println(summary_data);
+            
+        
+     // Using Stream builder()>>>Adding elements in the stream of Strings>>>
+        Stream.Builder<String> builder = Stream.builder(); 
+        Stream<String> stream_4 = builder.add("Geeks").build(); 
+        stream.forEach(System.out::println); 
+        
+}
+
+}
