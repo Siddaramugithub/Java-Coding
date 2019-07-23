@@ -48,3 +48,21 @@ BEGIN:
 	
 EXCEPTIONS:
 	Exception section starts with EXCEPTION keyword.This section is optional which contains statements that are executed when a run-time error occurs. Any exceptions can be handled in this section.
+	
+PL/SQL identifiers:
+	There are several PL/SQL identifiers such as variables, constants, procedures, cursors, triggers etc.
+	
+The 'Hello World' Example:
+DECLARE 
+   message  varchar2(20):= 'Hello, World!'; 
+BEGIN 
+   dbms_output.put_line(message); 
+END; 
+/ 
+
+Here, 
+	message is variable name
+	varchar2(size) is Datatype
+	:= is assignment operator
+	dbms_output.put_line is used print message content
+
