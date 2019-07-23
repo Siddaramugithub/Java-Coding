@@ -1,12 +1,74 @@
 
 What is restful?
+	REST (REpresentational State Transfer) is an architectural style for developing web services.
+	
+RESTFul Principles and Constraints
+The architecture is client/server, stateless, layered, and supports caching –
+1)RESTFul Client-Server:
+	Client-server is the typical architecture where the server can be the web server hosting the application, and the client 	 can be as simple as the web browser.
+	The client send's a request to the web service on the server. The server would either reject the request or comply and p	rovide an adequate response to the client.
+2)Stateless:
+	Stateless means that the state of the application is not maintained in REST.
+	For example, if you delete a resource from a server using the DELETE command, you cannot expect that delete information 	to be passed to the next request.
+3)Cache:
+	The Cache concept is to help with the problem of stateless which was described in the last point. 
+	Since each server client request is independent in nature, sometimes the client might ask the server for the same 				request again. 
+	This request will go to the server, and the server will give a response. This increases the traffic across the network. 		The cache is a concept implemented on the client to store requests which have already been sent to the server. So if 		the same request is given by the client, instead of going to the server, it would go to the cache and get the 				required information. 
+ 4)Layered System
+	The concept of a layered system is that any additional layer such as a middleware layer can be inserted between the client and the actual server hosting the RESTFul web service (The middleware layer is where all the business logic is created. This can be an extra service created with which the client could interact with before it makes a call to the web service.). But the introduction of this layer needs to be transparent so that it does not disturb the interaction between the client and the server.
+
+5)Interface/Uniform Contract
+	This is the underlying technique of how RESTful web services should work. RESTful basically works on the HTTP web layer and uses the below key verbs to work with resources on the server
+	POST - To create a resource on the server
+	GET - To retrieve a resource from the server
+	PUT - To change the state of a resource or to update it
+	DELETE - To remove or delete a resource from the server
+
+
+RESTful Key Elements?
+        1) Resources 
+        2) Request Verbs
+        3) Request Headers
+        4) Request Body
+        5) Response Body
+        6) Response Status codes
+1) Resources:
 
 Why restful?
+	Heterogeneous languages and environments – 
+        This is one of the fundamental reasons which is the same as we have seen for SOAP as well.
+        It enables web applications that are built on various programming languages to communicate with each other
+        With the help of Restful services, these web applications can reside on different environments, some could be on                                        		Windows, and others could be on Linux.
+
 
 What are the annotation available in restful
+	JAX-RS HTTP Method Annotations:
+		@Post
+		@Put
+		@Patch
+		@Delete
+		@Get
+		@Options
+		@Trace
+		@Head
+	JAX-RS Parameter Annotations:
+		@QueryParam
+		@FormParam
+		@PathParam
+		@DefaultValue
+		@Context
+	JAX-RS Other annotations:
+		@Path
+		@Produce
+		@Consume
+		@HeaderParam
+		@CookieParam
+		@Provider
+		@Crossorigion
+		@MatrixParam
+	
 
 Types of methods
-
 What are the dependencies we need to implement rest API?
 
 How to configure rest API?
