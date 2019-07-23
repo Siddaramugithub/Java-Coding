@@ -5,8 +5,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.jeejava</groupId>
-	<artifactId>spring-mvc-jdbc</artifactId>
+	<groupId>com.kolle.java</groupId>
+	<artifactId>jeejava</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
