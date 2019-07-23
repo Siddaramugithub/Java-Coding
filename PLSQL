@@ -26,3 +26,25 @@ PLSQL:
 	Execute as a whole block.
 	Mainly used to create an application.
 	It is an extension of SQL, so it can contain SQL inside it.
+	
+Typically, each block performs a logical action in the program. A block has the following structure:
+
+	DECLARE
+	    declaration statements;
+
+	
+	    executable statements
+
+	EXCEPTIONS
+	    exception handling statements
+
+	END;
+	
+DECLARE:
+	Declare section starts with DECLARE keyword in which variables, constants, records as cursors can be declared which 	stores data temporarily. It basically consists definition of PL/SQL identifiers. This part of the code is optional.
+	
+BEGIN:
+	Execution section starts with BEGIN and ends with END keyword.This is a mandatory section and here the program logic is written to perform any task like loops and conditional statements. It supports all DML commands, DDL commands and SQL*PLUS built-in functions as well.
+	
+EXCEPTIONS:
+	Exception section starts with EXCEPTION keyword.This section is optional which contains statements that are executed when a run-time error occurs. Any exceptions can be handled in this section.
