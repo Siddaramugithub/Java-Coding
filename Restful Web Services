@@ -1,19 +1,25 @@
 
 What is restful?
-	REST (REpresentational State Transfer) is an architectural style for developing web services.
+	REST (REpresentational State Transfer) is an architectural style for developing web services.Restful is implements the REST architectural style.
+	REST is an architectural style which is based on web-standards and the HTTP protocol. 
+	 A resource is accessed via a common interface based on the HTTP standard methods. 
+	 A REST client can access and modify the REST resources.
+	 REST allows that resources have different representations, e.g., text, XML, JSON etc. The REST client can ask for a specific representation via the HTTP protocol (content negotiation).
+
+
 	
 RESTFul Principles and Constraints
 The architecture is client/server, stateless, layered, and supports caching –
 1)RESTFul Client-Server:
-	Client-server is the typical architecture where the server can be the web server hosting the application, and the client 	 can be as simple as the web browser.
-	The client send's a request to the web service on the server. The server would either reject the request or comply and p	rovide an adequate response to the client.
+	Client-server is the typical architecture where the server can be the web server hosting the application, and the client can be as simple as the web browser.
+	The client send's a request to the web service on the server. The server would either reject the request or comply and provide an adequate response to the client.
 2)Stateless:
 	Stateless means that the state of the application is not maintained in REST.
 	For example, if you delete a resource from a server using the DELETE command, you cannot expect that delete information 	to be passed to the next request.
 3)Cache:
 	The Cache concept is to help with the problem of stateless which was described in the last point. 
-	Since each server client request is independent in nature, sometimes the client might ask the server for the same 				request again. 
-	This request will go to the server, and the server will give a response. This increases the traffic across the network. 		The cache is a concept implemented on the client to store requests which have already been sent to the server. So if 		the same request is given by the client, instead of going to the server, it would go to the cache and get the 				required information. 
+	Since each server client request is independent in nature, sometimes the client might ask the server for the same 	request again. 
+	This request will go to the server, and the server will give a response. This increases the traffic across the network. The cache is a concept implemented on the client to store requests which have already been sent to the server. So if the same request is given by the client, instead of going to the server, it would go to the cache and get the required information. 
  4)Layered System
 	The concept of a layered system is that any additional layer such as a middleware layer can be inserted between the client and the actual server hosting the RESTFul web service (The middleware layer is where all the business logic is created. This can be an extra service created with which the client could interact with before it makes a call to the web service.). But the introduction of this layer needs to be transparent so that it does not disturb the interaction between the client and the server.
 
@@ -66,14 +72,115 @@ What are the annotation available in restful
 		@Provider
 		@Crossorigion
 		@MatrixParam
-	
+@Get :
+GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
+
+@Put:
+PUT updates an existing resource or creates a new resource.
+
+@Post:
+creates a new resource. It must also be idempotent.
+
+@Delete:
+DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
+
+
 
 Types of methods
 What are the dependencies we need to implement rest API?
 
 How to configure rest API?
+Servlet mapping should be updated in the web.xml to point to our web service resource.
+	<?xml version="1.0" encoding="UTF-8"?>
+	<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" 		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 		id="WebApp_ID" version="3.0">
+	  <display-name>RESTful Jersey Hello World</display-name>
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	    <welcome-file>index.htm</welcome-file>
+	    <welcome-file>index.jsp</welcome-file>
+	    <welcome-file>default.html</welcome-file>
+	    <welcome-file>default.htm</welcome-file>
+	    <welcome-file>default.jsp</welcome-file>
+	  </welcome-file-list>
+
+	  <servlet>
+	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
+	    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+	    <init-param>
+		<param-name>jersey.config.server.provider.packages</param-name>
+		<param-value>com.javapapers.webservices.rest.jersey</param-value>
+	    </init-param>
+	    <load-on-startup>1</load-on-startup>
+	  </servlet>
+	  <servlet-mapping>
+	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
+	    <url-pattern>/rest/*</url-pattern>
+	  </servlet-mapping>
+	</web-app>
 
 How to call rest API in our application?
+   By using Jersey API: JAX-RS 2.0 (with Jersey 2.11) is used.
+   Example-1 
+	public class RESTfulJerseyClient {
+	private static final String webServiceURI = "http://localhost:8080/RESTful_Jersey_Hello_World";
+	public static void main(String[] args) {
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		URI serviceURI = UriBuilder.fromUri(webServiceURI).build();
+		WebTarget webTarget = client.target(serviceURI);
+		// response
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_PLAIN).get(Response.class).toString());
+		// text
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_PLAIN).get(String.class));
+		// xml
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_XML).get(String.class));
+		// html
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_HTML).get(String.class));
+	}
+}
+
+Example-2:
+	public class Tester {
+	  public static void main(String[] args) {
+	      ClientConfig config = new ClientConfig();
+	      Client client = ClientBuilder.newClient(config);
+	      WebTarget service = client.target(getBaseURI());
+	      // create one todo
+	      Todo todo = new Todo("3", "Blabla");
+	      Response response = service.path("rest").path("todos").path(todo.getId()).request(MediaType.APPLICATION_XML).put(Entity.entity(todo,MediaType.APPLICATION_XML),Response.class);
+	      // Return code should be 201 == created resource
+	      System.out.println(response.getStatus());
+	      // Get the Todos
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.TEXT_XML).get(String.class));
+	//    // Get JSON for application (Make sure to add the jersey-media-json-jackson dependency to add support for JSON)
+	//    System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_JSON).get(String.class));
+	      // Get XML for application
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	      //Get Todo with id 1
+	      Response checkDelete = service.path("rest").path("todos/1").request().accept(MediaType.APPLICATION_XML).get();
+	      //Delete Todo with id 1
+	      service.path("rest").path("todos/1").request().delete();
+	      //Get get all Todos id 1 should be deleted
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	      //Create a Todo
+	      Form form =new Form();
+	      form.param("id", "4");
+	      form.param("summary","Demonstration of the client lib for forms");
+	      response = service.path("rest").path("todos").request().post(Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED),Response.class);
+	      System.out.println("Form response " + response.getStatus());
+	      //Get all the todos, id 4 should have been created
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	  }
+	  private static URI getBaseURI() {
+	    return UriBuilder.fromUri("http://localhost:8080/com.vogella.jersey.todo").build();
+	  }
+	}
+
+
 
 How to handle Exception handling in Restful?
 
@@ -82,3 +189,9 @@ How to handle error codes/status codes in rest?
 How to write jersy cleint?
 
 List of Status codes
+
+
+9986190234
+310873 booking no
+cash memo number 1238582
+684766 consumer
