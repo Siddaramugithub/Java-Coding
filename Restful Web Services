@@ -38,7 +38,7 @@ RESTful Key Elements?
         4) Request Body
         5) Response Body
         6) Response Status codes
-1) Resources:
+
 
 Why restful?
 	Heterogeneous languages and environments – 
@@ -72,6 +72,11 @@ What are the annotation available in restful
 		@Provider
 		@Crossorigion
 		@MatrixParam
+		
+		
+@Path:
+It tells the relative path of the resource class or method.
+
 @Get :
 GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
 
@@ -168,8 +173,51 @@ RESTful JAX-RS File Upload Example:
 		}  
 	  }  
 
-Types of methods
 What are the dependencies we need to implement rest API?
+	<!-- for 2.0 version-->
+	<properties>
+		<jersey2.version>2.19</jersey2.version>
+		<jaxrs.version>2.0.1</jaxrs.version>
+	    </properties>
+	    <dependencies>
+		<!-- JAX-RS -->
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>${jaxrs.version}</version>
+		</dependency>
+		<!-- Jersey 2.19 -->
+		<dependency>
+		    <groupId>org.glassfish.jersey.containers</groupId>
+		    <artifactId>jersey-container-servlet</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-server</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-client</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+	   	 <groupId>org.glassfish.jersey.media</groupId>
+	   	 <artifactId>jersey-media-multipart</artifactId>
+	    	<version>2.19</version>
+		</dependency>
+		<dependency>
+	   	 <groupId>org.glassfish.jersey.media</groupId>
+	  	  <artifactId>jersey-media-moxy</artifactId>
+	  	  <version>2.19</version>
+		</dependency>
+		<dependency>
+  		  <groupId>org.glassfish.jersey.media</groupId>
+   		 <artifactId>jersey-media-json-processing</artifactId>
+   		 <version>2.19</version>
+		</dependency>
+	    </dependencies>
 
 How to configure rest API?
 Servlet mapping should be updated in the web.xml to point to our web service resource.
@@ -188,6 +236,7 @@ Servlet mapping should be updated in the web.xml to point to our web service res
 	  <servlet>
 	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
 	    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+	    <!-- for scan the package of rest resource-->
 	    <init-param>
 		<param-name>jersey.config.server.provider.packages</param-name>
 		<param-value>com.javapapers.webservices.rest.jersey</param-value>
@@ -198,6 +247,10 @@ Servlet mapping should be updated in the web.xml to point to our web service res
 	    <param-value>org.glassfish.jersey.filter.LoggingFilter;  
 	     org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>  
 	  </init-param>  
+	  <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.howtodoinjava.jersey.CustomApplication</param-value>
+          </init-param>
 	    <load-on-startup>1</load-on-startup>
 	  </servlet>
 	  <servlet-mapping>
@@ -267,15 +320,170 @@ Example-2:
 	    return UriBuilder.fromUri("http://localhost:8080/com.vogella.jersey.todo").build();
 	  }
 	}
+  Example-3 for File upload jersey client
+	public static void main(String[] args) throws IOException
+	{
+	    final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
 
+	    final FileDataBodyPart filePart = new FileDataBodyPart("file", new File("C:/temp/sample.pdf"));
+	    FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
+	    final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.field("foo", "bar").bodyPart(filePart);
+
+	    final WebTarget target = client.target("http://localhost:8080/JerseyDemos/rest/upload/pdf");
+	    final Response response = target.request().post(Entity.entity(multipart, multipart.getMediaType()));
+
+	    //Use response object to verify upload success
+
+	    formDataMultiPart.close();
+	    multipart.close();
+	}
 
 
 How to handle Exception handling in Restful?
+   1. Jersey ExceptionMapper – Create custom exceptions
+	@Provider
+	public class MissingFileException extends Exception implements
+			ExceptionMapper<MissingFileException>
+	{
+	    private static final long serialVersionUID = 1L;
+
+	    public MissingFileException() {
+		super("No File found with given name !!");
+	    }
+	    public MissingFileException(String string) {
+		super(string);
+	    }
+	    @Override
+	    public Response toResponse(MissingFileException exception)
+	    {
+		return Response.status(404).entity(exception.getMessage()).type("text/plain").build();
+	    }
+	}
+	
+  2.How to throw exception from REST API
+	@Path("/download")
+	public class JerseyService
+	{
+	    @GET
+	    @Path("/{fileName}")
+	    public Response downloadPdfFile(final @PathParam("fileName") String fileName) throws MissingFileException
+	    {
+		final String fullFilePath = "C:/temp/" + fileName;
+
+		File file = new File(fullFilePath);
+
+		if(file.exists() == false){
+		    throw new MissingFileException(fileName + " does not existing on this server !!");
+		}
+		StreamingOutput fileStream =  new StreamingOutput()
+		{
+		    @Override
+		    public void write(java.io.OutputStream output) throws IOException
+		    {
+			try
+			{
+			    java.nio.file.Path path = Paths.get(fullFilePath);
+			    byte[] data = Files.readAllBytes(path);
+			    output.write(data);
+			    output.flush();
+			}
+			catch (IOException e)
+			{
+			    throw new IOException("Error while reading file :: '"+fileName+"' !!");
+			}
+		    }
+		};
+		return Response
+			.ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
+			.header("content-disposition","attachment; filename = '"+fileName)
+			.build();
+	    }
+	}
+  3. Uncaught Exception Handling
+	@Provider
+	public class UncaughtException extends Throwable implements ExceptionMapper<Throwable>
+	{
+	    private static final long serialVersionUID = 1L;
+	    @Override
+	    public Response toResponse(Throwable exception)
+	    {
+		return Response.status(500).entity("Something bad happened. Please try again !!").type("text/plain").build();
+	    }
+	}
 
 How to handle error codes/status codes in rest?
 
 How to write jersy cleint?
 
+Custom logging?
+
+How to set Cookie in REST API Response?
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getAllEployees()
+	{
+	    Employees list = new Employees();
+	    list.setEmployeeList(new ArrayList<Employee>());
+
+	    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+	    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+	    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+
+	    return Response.ok().entity(list).cookie(new NewCookie("cookieResponse", "cookieValueInReturn")).build();
+	}
+
+Jersey + MOXy JSON - Manually adding MoxyJsonFeature
+	public class CustomApplication extends Application
+	{
+	    //Add Service APIs
+	    @Override
+	    public Set<Class<?>> getClasses()
+	    {
+		Set<Class<?>> resources = new HashSet<Class<?>>();
+
+		//register REST modules
+		resources.add(JerseyService.class);
+
+		//Manually adding MOXyJSONFeature
+		resources.add(org.glassfish.jersey.moxy.json.MoxyJsonFeature.class);
+
+		//Configure Moxy behavior
+		resources.add(JsonMoxyConfigurationContextResolver.class);
+
+		return resources;
+	    }
+	}
+Customize behavior using MoxyJsonConfig:
+	@Provider
+	public class JsonMoxyConfigurationContextResolver implements ContextResolver<MoxyJsonConfig>
+	{
+
+	    private final MoxyJsonConfig config;
+
+	    public JsonMoxyConfigurationContextResolver()
+	    {
+		final Map<String, String> namespacePrefixMapper = new HashMap<String, String>();
+		namespacePrefixMapper.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+
+		config = new MoxyJsonConfig()
+			.setNamespacePrefixMapper(namespacePrefixMapper)
+			.setNamespaceSeparator(':')
+			.setAttributePrefix("")
+			.setValueWrapper("value")
+			.property(JAXBContextProperties.JSON_WRAPPER_AS_ARRAY_NAME, true)
+			.setFormattedOutput(true)
+			.setIncludeRoot(true)
+			.setMarshalEmptyCollections(true);
+	    }
+
+	    @Override
+	    public MoxyJsonConfig getContext(Class<?> objectType)
+	    {
+		return config;
+	    }
+	}
 List of Status codes
 
 
