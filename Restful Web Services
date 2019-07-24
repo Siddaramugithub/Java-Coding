@@ -217,6 +217,11 @@ What are the dependencies we need to implement rest API?
    		 <artifactId>jersey-media-json-processing</artifactId>
    		 <version>2.19</version>
 		</dependency>
+		<dependency>
+   		 <groupId>com.google.code.gson</groupId>
+   		 <artifactId>gson</artifactId>
+	    	<version>2.2.4</version>
+		</dependency>
 	    </dependencies>
 
 How to configure rest API?
@@ -251,6 +256,10 @@ Servlet mapping should be updated in the web.xml to point to our web service res
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>com.howtodoinjava.jersey.CustomApplication</param-value>
           </init-param>
+	<init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>org.glassfish.jersey.filter.LoggingFilter</param-value>
+        </init-param>
 	    <load-on-startup>1</load-on-startup>
 	  </servlet>
 	  <servlet-mapping>
@@ -415,6 +424,274 @@ How to handle error codes/status codes in rest?
 
 How to write jersy cleint?
 
+ Jersey 2 Client API
+  JAX-RS Client API is a designed to allow fluent programming model. To create jersey client follow these steps –
+	Use ClientBuilder.newClient() static method.
+	Use client.target() method on above obtained client instance.
+	Get Invocation.Builder using webTarget.request() method on WebTarget instance obtained in second step.
+	Execute invocationBuilder.get(), put(), post() or delete() methods to invoke corresponding REST APIs.
+	Jersey ClientBuilder Example
+	--Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+	--WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+	--Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+	--Response response = invocationBuilder.post(Entity.entity(emp, MediaType.APPLICATION_XML));
+	3. HTTP GET – Collection/List of Entities
+			@GET
+		@Path("/employees")
+		@Produces(MediaType.APPLICATION_XML)
+		public Employees getAllEmployees()
+		{
+		    Employees list = new Employees();
+		    list.setEmployeeList(new ArrayList<Employee>());
+
+		    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+		    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+		    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+
+		    return list;
+		}
+	This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.get();
+
+		Employees employees = response.readEntity(Employees.class);
+		List<Employee> listOfEmployees = employees.getEmployeeList();
+
+		System.out.println(response.getStatus());
+		System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+
+		Output:
+
+		200
+		[Employee [id=1, name=Lokesh Gupta], Employee [id=2, name=Alex Kolenchiskey], Employee [id=3, name=David Kameron]]
+	HTTP GET – Single Entitiy
+
+		This is the API code written for retrieving single employee based on its id.
+		@GET
+		@Path("/employees/{id}")
+		@Produces(MediaType.APPLICATION_XML)
+		public Response updateEmployeeById(@PathParam("id") Integer id)
+		{
+		    if(id  < 0){
+			return Response.noContent().build();
+		    }
+		    Employee emp = new Employee();
+
+		    emp.setId(id);
+		    emp.setName("Lokesh Gupta");
+
+		    GenericEntity<Employee> entity = new GenericEntity<Employee>(emp, Employee.class);
+		    return Response.ok().entity(entity).build();
+		}
+	This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.get();
+
+		Employee employee = response.readEntity(Employee.class);
+
+		System.out.println(response.getStatus());
+		System.out.println(employee);
+
+		Output:
+
+		200
+		Employee [id=1, name=Lokesh Gupta]
+	HTTP POST
+		This is the API code written for adding an employee in the collection.
+
+		@POST
+		@Path("/employees")
+		@Consumes(MediaType.APPLICATION_XML)
+		@Produces(MediaType.APPLICATION_XML)
+		public Response addEmployee( Employee e ) throws URISyntaxException
+		{
+		    if(e == null){
+			return Response.status(400).entity("Please add employee details !!").build();
+		    }
+
+		    if(e.getName() == null) {
+			return Response.status(400).entity("Please provide the employee name !!").build();
+		    }
+
+		    return Response.created(new URI("/rest/employees/"+e.getId())).build();
+		}
+		Jersey Client Code
+
+		This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+
+		Employee emp = new Employee();
+		emp.setId(1);
+		emp.setName("David Feezor");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.post(Entity.entity(emp, MediaType.APPLICATION_XML));
+
+		System.out.println(response.getStatus());
+		System.out.println(response.readEntity(String.class));
+
+		Output:
+
+		201
+		
+HTTP PUT
+
+This is the API code written for updating an employee name by its id.
+
+@PUT
+@Path("/employees/{id}")
+@Consumes(MediaType.APPLICATION_XML)
+@Produces(MediaType.APPLICATION_XML)
+public Response updateEmployeeById(@PathParam("id") Integer id, Employee e)
+{
+    Employee updatedEmployee = new Employee();
+     
+    if(e.getName() == null) {
+        return Response.status(400).entity("Please provide the employee name !!").build();
+    }
+     
+    updatedEmployee.setId(id);
+    updatedEmployee.setName(e.getName());
+     
+    return Response.ok().entity(updatedEmployee).build();
+}
+Jersey 2 Client Code
+
+This RESTful client code will access above API and print the response in the console.
+
+Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+ 
+Employee emp = new Employee();
+emp.setId(1);
+emp.setName("David Feezor");
+ 
+Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+Response response = invocationBuilder.put(Entity.entity(emp, MediaType.APPLICATION_XML));
+ 
+Employee employee = response.readEntity(Employee.class);
+     
+System.out.println(response.getStatus());
+System.out.println(employee);
+ 
+Output:
+ 
+200
+Employee [id=1, name=David Feezor]
+7. HTTP DELETE
+
+This is the API code written for removing an employee from the collection by id.
+
+@DELETE
+@Path("/employees/{id}")
+public Response deleteEmployeeById(@PathParam("id") Integer id)
+{      
+    return Response.status(202).entity("Employee deleted successfully !!").build();
+}
+Jersey Client Code
+
+This RESTful client code will access above API and print the response in the console.
+
+Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+ 
+Invocation.Builder invocationBuilder =  webTarget.request();
+Response response = invocationBuilder.delete();
+ 
+System.out.println(response.getStatus());
+System.out.println(response.readEntity(String.class));
+ 
+Output:
+ 
+202
+Employee deleted successfully !!
+8. Model classes and Configuration files
+
+Listed below are other used files to create this Jersey 2 client example.
+
+Employees.java
+
+package com.howtodoinjava.jersey;
+ 
+import java.util.List;
+ 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+ 
+@XmlRootElement(name = "employeeList")
+@XmlAccessorType (XmlAccessType.FIELD)
+public class Employees
+{
+    @XmlElement(name="employee")
+    private List<Employee> employeeList;
+ 
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+ 
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+}
+Employee.java
+
+package com.howtodoinjava.jersey;
+ 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+ 
+@XmlRootElement(name = "employee")
+@XmlAccessorType (XmlAccessType.FIELD)
+public class Employee
+{
+    private Integer id;
+    private String name;
+     
+    public Employee() {
+         
+    }
+     
+    public Employee(Integer id, String name) {
+        this.id  = id;
+        this.name = name;
+    }
+ 
+    public Integer getId() {
+        return id;
+    }
+ 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+ 
+    public String getName() {
+        return name;
+    }
+ 
+    public void setName(String name) {
+        this.name = name;
+    }
+     
+    @Override
+    public String toString() {
+        return "Employee [id=" + id + ", name=" + name + "]";
+    }
+}
+
+
 Custom logging?
 
 How to set Cookie in REST API Response?
@@ -484,6 +761,267 @@ Customize behavior using MoxyJsonConfig:
 		return config;
 	    }
 	}
+Jersey + JSONP Example
+	public class CustomApplication extends ResourceConfig
+	{
+	    public CustomApplication()
+	    {
+		register(JsonProcessingFeature.class);
+		packages("com.howtodoinjava.jersey");
+		packages("org.glassfish.jersey.examples.jsonp");
+		register(LoggingFilter.class);
+		property(JsonGenerator.PRETTY_PRINTING, true);
+
+	    }
+	}
+Jersey + Google Gson Example
+	public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
+		MessageBodyReader<Object> {
+	    private static final String UTF_8 = "UTF-8";
+
+	    private Gson gson;
+
+	    //Customize the gson behavior here
+	    private Gson getGson() {
+		if (gson == null) {
+		    final GsonBuilder gsonBuilder = new GsonBuilder();
+		    gson = gsonBuilder.disableHtmlEscaping()
+			    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+			    .setPrettyPrinting()
+			    .serializeNulls()
+			    .create();
+		}
+		return gson;
+	    }
+
+	    @Override
+	    public boolean isReadable(Class<?> type, Type genericType,
+		    java.lang.annotation.Annotation[] annotations, MediaType mediaType) {
+		return true;
+	    }
+
+	    @Override
+	    public Object readFrom(Class<Object> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType,
+		    MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+		InputStreamReader streamReader = null;
+		try {
+		    streamReader = new InputStreamReader(entityStream, UTF_8);
+		} catch (UnsupportedEncodingException e) {
+		    e.printStackTrace();
+		}
+		try {
+		    Type jsonType;
+		    if (type.equals(genericType)) {
+			jsonType = type;
+		    } else {
+			jsonType = genericType;
+		    }
+		    return getGson().fromJson(streamReader, jsonType);
+		} finally {
+		    try {
+			streamReader.close();
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    }
+		}
+	    }
+
+	    @Override
+	    public boolean isWriteable(Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType) {
+		return true;
+	    }
+
+	    @Override
+	    public long getSize(Object object, Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType) {
+		return -1;
+	    }
+
+	    @Override
+	    public void writeTo(Object object, Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType,
+		    MultivaluedMap<String, Object> httpHeaders,
+		    OutputStream entityStream) throws IOException,
+		    WebApplicationException {
+		OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8);
+		try {
+		    Type jsonType;
+		    if (type.equals(genericType)) {
+			jsonType = type;
+		    } else {
+			jsonType = genericType;
+		    }
+		    getGson().toJson(object, jsonType, writer);
+		} finally {
+		    writer.close();
+		}
+	    }
+	}
+	Register Gson Provider
+
+	Now register above class with application resource config.
+
+	package com.howtodoinjava.jersey;
+
+	import org.glassfish.jersey.filter.LoggingFilter;
+	import org.glassfish.jersey.server.ResourceConfig;
+	import com.howtodoinjava.jersey.provider.GsonMessageBodyHandler;
+
+	public class CustomApplication extends ResourceConfig
+	{
+	    public CustomApplication()
+	    {
+		packages("com.howtodoinjava.jersey");
+		register(LoggingFilter.class);
+		register(GsonMessageBodyHandler.class);
+	    }
+	}
+	Extending Gson Functionality
+
+	You can extend/customize Gson behavior anytime inside GsonMessageBodyHandler.getGson() method.
+
+	private Gson getGson() {
+	    if (gson == null) {
+		final GsonBuilder gsonBuilder = new GsonBuilder();
+		gson = gsonBuilder.disableHtmlEscaping()
+			.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+			.setPrettyPrinting()
+			.serializeNulls()
+			.create();
+	    }
+	    return gson;
+	}
+	
+	
+Jersey REST API Security Example
+
+@Provider
+public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter
+{
+     
+    @Context
+    private ResourceInfo resourceInfo;
+     
+    private static final String AUTHORIZATION_PROPERTY = "Authorization";
+    private static final String AUTHENTICATION_SCHEME = "Basic";
+      
+    @Override
+    public void filter(ContainerRequestContext requestContext)
+    {
+        Method method = resourceInfo.getResourceMethod();
+        //Access allowed for all
+        if( ! method.isAnnotationPresent(PermitAll.class))
+        {
+            //Access denied for all
+            if(method.isAnnotationPresent(DenyAll.class))
+            {
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                         .entity("Access blocked for all users !!").build(););
+                return;
+            }
+              
+            //Get request headers
+            final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+              
+            //Fetch authorization header
+            final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+              
+            //If no authorization information present; block access
+            if(authorization == null || authorization.isEmpty())
+            {
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("You cannot access this resource").build());
+                return;
+            }
+              
+            //Get encoded username and password
+            final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+              
+            //Decode username and password
+            String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));;
+  
+            //Split username and password tokens
+            final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+            final String username = tokenizer.nextToken();
+            final String password = tokenizer.nextToken();
+              
+            //Verifying Username and password
+            System.out.println(username);
+            System.out.println(password);
+              
+            //Verify user access
+            if(method.isAnnotationPresent(RolesAllowed.class))
+            {
+                RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+                Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
+                  
+                //Is user valid?
+                if( ! isUserAllowed(username, password, rolesSet))
+                {
+                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("You cannot access this resource").build(););
+                    return;
+                }
+            }
+        }
+    }
+    private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet)
+    {
+        boolean isAllowed = false;
+          
+        //Step 1. Fetch password from database and match with password in argument
+        //If both match then get the defined role for user from database and continue; else return isAllowed [false]
+        //Access the database and do this part yourself
+        //String userRole = userMgr.getUserRole(username);
+         
+        if(username.equals("howtodoinjava") && password.equals("password"))
+        {
+            String userRole = "ADMIN";
+             
+            //Step 2. Verify user role
+            if(rolesSet.contains(userRole))
+            {
+                isAllowed = true;
+            }
+        }
+        return isAllowed;
+    }
+}
+
+public class CustomApplication extends ResourceConfig
+{
+    public CustomApplication()
+    {
+        packages("com.howtodoinjava.jersey");
+        register(LoggingFilter.class);
+        register(GsonMessageBodyHandler.class);
+ 
+        //Register Auth Filter here
+        register(AuthenticationFilter.class);
+    }
+}
+
+@Path("/employees")
+public class JerseyService
+{
+    @RolesAllowed("ADMIN")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Employees getAllEmployees()
+    {
+        Employees list = new Employees();
+        list.setEmployeeList(new ArrayList<Employee>());
+         
+        list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+        list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+        list.getEmployeeList().add(new Employee(3, "David Kameron"));
+         
+        return list;
+    }
+}  
 List of Status codes
 
 
