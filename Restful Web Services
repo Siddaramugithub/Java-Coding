@@ -1,3 +1,5 @@
+===================================What are Web Services?=====================================================
+Web Services are client and server applications that communicate over the World Wide Web's (WWW) Hypertext Transfer Protocol (HTTP). As described by the World Wide Web Consortium (W3C), web services provide a standard means of interoperating between software applications running on a variety of platforms and frameworks.
 
 ===================================What is restful?====================================================
 	REST (REpresentational State Transfer) is an architectural style for developing web services.Restful is implements the REST architectural style.
@@ -7,6 +9,8 @@
 	 REST allows that resources have different representations, e.g., text, XML, JSON etc. The REST client can ask for a specific representation via the HTTP protocol (content negotiation).
 	RESTful web services are light weight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
 	
+=======================================What is JAX-RS and Jersey?===========================================
+Java API for RESTful Web Services (JAX-RS) is a Java programming language specification that supports creating web services according to the REST architectural pattern in Java. JAX-RS 
 
 	
 ======================================RESTFul Principles and Constraints==================================
@@ -17,11 +21,23 @@ The architecture is client/server, stateless, layered, and supports caching –
 2)Stateless:
 	Stateless means that the state of the application is not maintained in REST.
 	For example, if you delete a resource from a server using the DELETE command, you cannot expect that delete information 	to be passed to the next request.
+	As per the REST architecture, a RESTful Web Service should not keep a client state on the server. This restriction is called Statelessness. It is the responsibility of the client to pass its context to the server and then the server can store this context to process the client's further request
+	Advantages of Statelessness:
+		Following are the benefits of statelessness in RESTful Web Services −
+		Web services can treat each method request independently.
+		Web services need not maintain the client's previous interactions. It simplifies the application design.
+		As HTTP is itself a statelessness protocol, RESTful Web Services work seamlessly with the HTTP protocols.
+	Disadvantages of Statelessness:
+		Following are the disadvantages of statelessness in RESTful Web Services −
+		Web services need to get extra information in each request and then interpret to get the client's state in case the client interactions are to be taken care of.
+
 3)Cache:
 	The Cache concept is to help with the problem of stateless which was described in the last point. 
 	Since each server client request is independent in nature, sometimes the client might ask the server for the same 	request again. 
 	This request will go to the server, and the server will give a response. This increases the traffic across the network. The cache is a concept implemented on the client to store requests which have already been sent to the server. So if the same request is given by the client, instead of going to the server, it would go to the cache and get the required information. 
- 4)Layered System
+	Caching refers to storing the server response in the client itself, so that a client need not make a server request for the same resource again and again. A server response should have information about how caching is to be done, so that a client caches the response for a time-period or never caches the server response.
+	
+4)Layered System
 	The concept of a layered system is that any additional layer such as a middleware layer can be inserted between the client and the actual server hosting the RESTFul web service (The middleware layer is where all the business logic is created. This can be an extra service created with which the client could interact with before it makes a call to the web service.). But the introduction of this layer needs to be transparent so that it does not disturb the interaction between the client and the server.
 
 5)Interface/Uniform Contract
@@ -90,19 +106,43 @@ HTTP Response:
 		
 		
 @Path:
-It tells the relative path of the resource class or method.
+It tells the relative path of the resource class or method. We can get the URI of a webservice by scanning the Path annotation value.
 
 @Get :
-GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
-
+	GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
+	The GET method is used to get the information from the server. This is equivalent to the SELECT statement in SQL. There is no message body in the GET request as it is meant to only fetch the data from the server.
+	GET request should never change the data on server, and should only be used to read data.
 @Put:
-PUT updates an existing resource or creates a new resource.
+	PUT updates an existing resource or creates a new resource.
+	This should be used when we have to replace/update/create the data, which is already present/not present on the server with the data that we pass in the message body.
 
 @Post:
-creates a new resource. It must also be idempotent.
+	creates a new resource. It must also be idempotent.
+	This is used to send the data to the server. This can be students information, some XML file or some JPG file. The message body contains the data. POST requests are generally used to create but it can be used to update the existing data as well.
+@Patch: 
+	PATCH is the more technically correct method for partial updates.
+	Submitting partial updates to records is a relatively new operation and is not supported in all APIs.
+	Some APIs support partial updates via the PUT method, but PATCH is the more technically correct method for partial updates.
+	So let’s add another incomplete record and then PATCH it.
+	Add this employee:
+
+		{
+		  "employeeId": 123,
+		  "firstName": "Donald",
+		  "email": "dahammer@asgard.com"
+		}
+	Then, use GET to retrieve employee id 123.
+
+		{
+		  "employeeId": 123,
+		  "firstName": "Donald",
+		  "lastName": null,
+		  "email": "dahammer@asgard.com",
+		  "phone": null
+		}
 
 @Delete:
-DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
+	DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
 
 @PathParam:
 Example-1
@@ -224,6 +264,7 @@ Returns only HTTP Header, no Body
 	   	 <artifactId>jersey-media-multipart</artifactId>
 	    	<version>2.19</version>
 		</dependency>
+		<!--The Moxy library takes care of converting the Java object into JSON.-->
 		<dependency>
 	   	 <groupId>org.glassfish.jersey.media</groupId>
 	  	  <artifactId>jersey-media-moxy</artifactId>
@@ -1178,12 +1219,86 @@ public static void main(String[] args)
     System.out.println(response.getStatus());
     System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
 }
+========================================HATEOAS =========================================================
+HATEOAS stands for Hypertext As The Engine Of Application State.
+The typical response of the students resource /myApp/students/1:
+	<Student>
+	    <rollno>10</rollno>
+	    <firstName>Amit</firstName >
+	    <lastName>Agarwal</lastName>
+	    <age>25</age>
+	</Student>
+What if we give the additional information to the client, about how to check all the courses that this student (with the given roll no.) has enrolled into.
+	<Student>
+	    <rollno>10</rollno>
+	    <firstName>Amit</firstName >
+	    <lastName>Agarwal</lastName>
+	    <age>25</age>
+	    <link rel = “courses” href =”/myApp/students/1/registrations”>
+	</Student>
+Similarly for the courses URI: /myApp/courses/1234
+	<Courses>
+	    <CourseID>1234</ CourseID>
+	    <CourseName>REST</ CourseName>
+	    <CourseFess>10000</ CourseFess>
+	    <courseDuration>30</CourseDuration>
+	    <courseStartDate>25-12-2014</courseStartdate> 
+	</Courses>
+Now once, a client has the course information, he/she might want to know about the students who have enrolled for the course, we can send the link of the resource URI of the students enrolled in this course.
+	<Courses>
+	    <CourseID>1234</ CourseID>
+	    <CourseName>REST</ CourseName>
+	    <CourseFess>10000</ CourseFess>
+	    <courseDuration>30</CourseDuration>
+	    <courseStartDate>25-12-2014</courseStartdate>
+	    <link rel=”students” href=”/myApp/courses/1234/registrations”> 
+	</Courses>
+	
+	
+===============================Building a Generic Response=============================================
+So far when we send a response to the client we have always send the status code as 200 in case of successful response but a good REST API design API sends different status code in response for different situations.
 
+For example, we should send the status code of 201 in case of POST method, which broadcasts to the client that the resource has been successfully created.
 
+public Response getAllStudents(@Context HttpHeaders headers)
+{
+	List<Student> students = studentService.getAllStudents();
+	GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(students){};
+	return Response.status(Status.OK).entity(entity).build();
+ 	
+}
+The response class contains the HTTP line, HTTP headers and the HTTP message body.
+
+@POST
+@Produces(MediaType.APPLICATION_XML)
+public Response addStudent(Student student)
+{
+	
+	String response = studentService.addStudent(student);
+	return Response.status(Status.CREATED).entity(response).build();
+
+}
+So for the POST method the 201, Created status is sent. Hence, with the use of the Response class, more generic and informative response can be sent to the client.
 ===============================List of Status codes==========================================================
+	
+200--OK − This informs the client about the successful response.
+201--CREATED − when a resource is successfully created using POST or PUT request. Returns link to the newly created resource using the location header.
+		This should be returned for POST requests, stating that the resource is created successfully on the server. Like, when the client sends: POST /myApp/students/ request and the student recourse is created successfully then the server should return 201 Created as status code. The server can also return 200 OK, but it's always good to be more precise, and send 201 Created in case of a POST request.
+202--Accepted - This informs the client that the request has been successfully received, but the processing is not yet finished.
 
+204--NO CONTENT − when response body is empty. For example, a DELETE request.
+		  This informs the client that the request has been successfully processed, but no content will be returned.
+304--NOT MODIFIED − used to reduce network bandwidth usage in case of conditional GET requests. Response body should be empty. Headers should have date, location, etc.
+400--BAD REQUEST − states that an invalid input is provided. For example, validation error, missing data.
+401--UNAUTHORIZED − states that user is using invalid or wrong authentication token.
+403--FORBIDDEN − states that the user is not having access to the method being used. For example, Delete access without admin rights.
+404--NOT FOUND − states that the method is not available.
+409--CONFLICT − states conflict situation while executing the method. For example, adding duplicate entry.
+500--INTERNAL SERVER ERROR − states that the server has thrown some exception while executing the method.
+503--Service Unavailable - When server is not available due to excessive load or may be down for maintainence, this status code is returned to the client.
 
-
+For more information about status code,please click below link:
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#2xx_Success
 ===================================Below are the References links for Rest
 Link for how to create JAX-RS API and Cliet:
 https://www.tutorialspoint.com/restful/restful_methods.htm
