@@ -1,14 +1,15 @@
 
-What is restful?
+===================================What is restful?====================================================
 	REST (REpresentational State Transfer) is an architectural style for developing web services.Restful is implements the REST architectural style.
 	REST is an architectural style which is based on web-standards and the HTTP protocol. 
 	 A resource is accessed via a common interface based on the HTTP standard methods. 
 	 A REST client can access and modify the REST resources.
 	 REST allows that resources have different representations, e.g., text, XML, JSON etc. The REST client can ask for a specific representation via the HTTP protocol (content negotiation).
-
+	RESTful web services are light weight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
+	
 
 	
-RESTFul Principles and Constraints
+======================================RESTFul Principles and Constraints==================================
 The architecture is client/server, stateless, layered, and supports caching –
 1)RESTFul Client-Server:
 	Client-server is the typical architecture where the server can be the web server hosting the application, and the client can be as simple as the web browser.
@@ -31,7 +32,7 @@ The architecture is client/server, stateless, layered, and supports caching –
 	DELETE - To remove or delete a resource from the server
 
 
-RESTful Key Elements?
+=====================================RESTful Key Elements?============================================
         1) Resources 
         2) Request Verbs
         3) Request Headers
@@ -39,8 +40,22 @@ RESTful Key Elements?
         5) Response Body
         6) Response Status codes
 
+=====================================What is HTTPRequest and HttpResponse?============================
+HTTP Request:
+	An HTTP Request has five major parts −
+	Verb − Indicates the HTTP methods such as GET, POST, DELETE, PUT, etc.
+	URI − Uniform Resource Identifier (URI) to identify the resource on the server.
+	HTTP Version − Indicates the HTTP version. For example, HTTP v1.1.
+	Request Header − Contains metadata for the HTTP Request message as key-value pairs. For example, client (or browser) type, format supported by the client, format of the message body, cache settings, etc.77
+	Request Body − Message content or Resource representation.
+HTTP Response:
+	An HTTP Response has four major parts −
+	Status/Response Code − Indicates the Server status for the requested resource. For example, 404 means resource not found and 200 means response is ok.
+	HTTP Version − Indicates the HTTP version. For example HTTP v1.1.
+	Response Header − Contains metadata for the HTTP Response message as keyvalue pairs. For example, content length, content type, response date, server type, etc.
+	Response Body − Response message content or Resource representation.
 
-Why restful?
+=====================================Why restful?=====================================================
 	Heterogeneous languages and environments – 
         This is one of the fundamental reasons which is the same as we have seen for SOAP as well.
         It enables web applications that are built on various programming languages to communicate with each other
@@ -173,7 +188,7 @@ RESTful JAX-RS File Upload Example:
 		}  
 	  }  
 
-What are the dependencies we need to implement rest API?
+==================================What are the dependencies we need to implement rest API?=======================
 	<!-- for 2.0 version-->
 	<properties>
 		<jersey2.version>2.19</jersey2.version>
