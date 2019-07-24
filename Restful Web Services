@@ -84,7 +84,89 @@ creates a new resource. It must also be idempotent.
 @Delete:
 DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
 
+@PathParam:
+Example-1
+	@Path("/hello")  
+	public class HelloService{  
+	    @GET  
+	    @Path("{year}/{month}/{day}")  
+	    public Response getDate(  
+		    @PathParam("year") int year,  
+		    @PathParam("month") int month,   
+		    @PathParam("day") int day) {  
 
+	       String date = year + "/" + month + "/" + day;  
+
+	       return Response.status(200)  
+		.entity("getDate is called, year/month/day : " + date)  
+		.build();  
+	    }  
+	 }  
+@FormParam:
+Example-1:
+	@Path("/product")  
+	public class ProductService{  
+	    @POST  
+	    @Path("/add")  
+	    public Response addUser(  
+		@FormParam("id") int id,  
+		@FormParam("name") String name,  
+		@FormParam("price") float price) {  
+
+		return Response.status(200)  
+		    .entity(" Product added successfuly!<br> Id: "+id+"<br> Name: " + name+"<br> Price: "+price)  
+		    .build();  
+	    }  
+	}  
+JAX-RS File Download Example:
+	We can download text files, image files, pdf files, excel files in java by JAX-RS API. To do so we need to write few lines of code only. Here, we are using jersey implementation for developing JAX-RS file download examples.
+	You need to specify different content type to download different files. The @Produces annotation is used to specify the type of file content.
+	@Produces("text/plain"): for downloading text file.
+	@Produces("image/png"): for downloading png image file.
+	@Produces("application/pdf"): for downloading PDF file.
+	@Produces("application/vnd.ms-excel"): for downloading excel file.
+	@Produces("application/msword"): for downloading ms word file.
+Example for download file:
+	@Path("/files")  
+	public class FileDownloadService {  
+	    private static final String FILE_PATH = "c:\\myimage.png";  
+	    @GET  
+	    @Path("/image")  
+	    @Produces("image/png")  
+	    public Response getFile() {  
+		File file = new File(FILE_PATH);  
+		ResponseBuilder response = Response.ok((Object) file);  
+		response.header("Content-Disposition","attachment; filename=\"javatpoint_image.png\"");  
+		return response.build();  
+
+	    }  
+	 }  
+RESTful JAX-RS File Upload Example:
+	@Path("/files")  
+	public class FileUploadService {  
+	    @POST  
+	    @Path("/upload")  
+	    @Consumes(MediaType.MULTIPART_FORM_DATA)  
+	    public Response uploadFile(  
+		    @FormDataParam("file") InputStream uploadedInputStream,  
+		    @FormDataParam("file") FormDataContentDisposition fileDetail) {  
+		    String fileLocation = "e://" + fileDetail.getFileName();  
+			    //saving file  
+		    try {  
+			FileOutputStream out = new FileOutputStream(new File(fileLocation));  
+			int read = 0;  
+			byte[] bytes = new byte[1024];  
+			out = new FileOutputStream(new File(fileLocation));  
+			while ((read = uploadedInputStream.read(bytes)) != -1) {  
+			    out.write(bytes, 0, read);  
+			}  
+			out.flush();  
+			out.close();  
+		    } catch (IOException e) {e.printStackTrace();}  
+		    String output = "File successfully uploaded to : " + fileLocation;  
+		    return Response.status(200).entity(output).build();  
+		}  
+	  }  
 
 Types of methods
 What are the dependencies we need to implement rest API?
@@ -110,6 +192,12 @@ Servlet mapping should be updated in the web.xml to point to our web service res
 		<param-name>jersey.config.server.provider.packages</param-name>
 		<param-value>com.javapapers.webservices.rest.jersey</param-value>
 	    </init-param>
+	   <!-- For file Upload-->
+	   <init-param>  
+	    <param-name>jersey.config.server.provider.classnames</param-name>  
+	    <param-value>org.glassfish.jersey.filter.LoggingFilter;  
+	     org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>  
+	  </init-param>  
 	    <load-on-startup>1</load-on-startup>
 	  </servlet>
 	  <servlet-mapping>
