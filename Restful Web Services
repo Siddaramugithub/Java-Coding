@@ -187,6 +187,8 @@ RESTful JAX-RS File Upload Example:
 		    return Response.status(200).entity(output).build();  
 		}  
 	  }  
+@Head:
+Returns only HTTP Header, no Body
 
 ==================================What are the dependencies we need to implement rest API?=======================
 	<!-- for 2.0 version-->
@@ -1179,5 +1181,12 @@ public static void main(String[] args)
 
 
 ===============================List of Status codes==========================================================
+
+
+
+===================================Below are the References links for Rest
+Link for how to create JAX-RS API and Cliet:
+https://www.tutorialspoint.com/restful/restful_methods.htm
+
 
 
