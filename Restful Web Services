@@ -47,7 +47,7 @@ Why restful?
         With the help of Restful services, these web applications can reside on different environments, some could be on                                        		Windows, and others could be on Linux.
 
 
-What are the annotation available in restful
+================================What are the annotation available in restful======================
 	JAX-RS HTTP Method Annotations:
 		@Post
 		@Put
@@ -1022,10 +1022,147 @@ public class JerseyService
         return list;
     }
 }  
-List of Status codes
+
+===============================Jersey REST Client Authentication Example=====================================
+1. Jersey Client – HttpAuthenticationFeature
+
+HttpAuthenticationFeature class provides HttpBasic and Digest client authentication capabilities. The feature work in one of 4 modes i.e. BASIC, BASIC NON-PREEMPTIVE, DIGEST and UNIVERSAL. Let’s quickly learn about them.
+
+BASIC – It’s preemptive authentication way i.e. information is send always with each HTTP request. This mode must be combined with usage of SSL/TLS as the password is send only BASE64 encoded.
+BASIC NON-PREEMPTIVE – It’s non-preemptive authentication way i.e. auth information is added only when server refuses the request with 401 status code and then the request is repeated with authentication information.
+DIGEST – Http digest authentication. Does not require usage of SSL/TLS.
+UNIVERSAL – Combination of basic and digest authentication in non-preemptive mode i.e. in case of 401 response, an appropriate authentication is used based on the authentication requested as defined in WWW-Authenticate HTTP header.
+To use HttpAuthenticationFeature, build an instance of it and register with client.
+
+1.1. Basic authentication mode
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("username", "password"); 
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+1.2. Basic authentication – non-prempitive mode
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                                    .nonPreemptive()
+                                    .credentials("username", "password")
+                                    .build();
+
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+1.3. Universal mode
+//HttpAuthenticationFeature feature = HttpAuthenticationFeature.universal("username", "password");
+
+//Universal builder having different credentials for different schemes
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.universalBuilder()
+                .credentialsForBasic("username1", "password1")
+                .credentials("username2", "password2").build();
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+2. How to secure REST APIs
+
+For authentication enabled rest apis, use roles related annotations, such as @RolesAllowed. For example, this is the code of secured REST API.
+
+@Path("/employees")
+public class JerseyService
+{
+    @RolesAllowed("ADMIN")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Employees getAllEmployees()
+    {
+        Employees list = new Employees();
+        list.setEmployeeList(new ArrayList<Employee>());
+         
+        list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+        list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+        list.getEmployeeList().add(new Employee(3, "David Kameron"));
+         
+        return list;
+    }
+}
+
+3. Jersey REST Client Code
+
+Below is the jersey rest client basic authentication example which accept username and password details for authentication purpose.
+
+public static void main(String[] args) throws IOException
+{
+    httpGETCollectionExample();
+}
+ 
+private static void httpGETCollectionExample()
+{
+    ClientConfig clientConfig = new ClientConfig();
+ 
+    HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("howtodoinjava", "password");
+    clientConfig.register( feature) ;
+ 
+    clientConfig.register(JacksonFeature.class);
+ 
+    Client client = ClientBuilder.newClient( clientConfig );
+    WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+     
+    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder.get();
+     
+    System.out.println(response.getStatus());
+    System.out.println(response.getStatusInfo());
+     
+    if(response.getStatus() == 200)
+    {
+        Employees employees = response.readEntity(Employees.class);
+        List<Employee> listOfEmployees = employees.getEmployeeList();
+        System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+    }
+}
 
 
-9986190234
-310873 booking no
-cash memo number 1238582
-684766 consumer
+=====================================Jersey Client – Set Cookie ==============================================
+Rest API Code
+
+I have written below REST API for testing purpose.
+
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public Employees getAllEployees(@CookieParam(value="cookieParam1") String cookieParam1,
+                                @CookieParam(value="cookieParam2") String cookieParam2)
+{
+    System.out.println("cookieParam1 is :: "+ cookieParam1);
+    System.out.println("cookieParam2 is :: "+ cookieParam2);
+     
+    Employees list = new Employees();
+    list.setEmployeeList(new ArrayList<Employee>());
+     
+    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+     
+    return list;
+}
+
+Now let’s call above REST API using Jersey client code as suggested in first heading.
+
+public static void main(String[] args)
+{
+    Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+    WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+      
+    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder
+                                .cookie("cookieParam1","cookieValue1")
+                                .cookie(new Cookie("cookieParam2", "cookieValue2"))
+                                .get();
+      
+    Employees employees = response.readEntity(Employees.class);
+    List<Employee> listOfEmployees = employees.getEmployeeList();
+          
+    System.out.println(response.getStatus());
+    System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+}
+
+
+===============================List of Status codes==========================================================
+
+
