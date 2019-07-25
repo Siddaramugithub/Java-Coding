@@ -110,26 +110,58 @@ HTTP Response:
 		@Provider
 		@Crossorigion
 		@MatrixParam
+		@Stateless
+		@Singleton
 		
-		
+	
+	
+	
+	
 @Path:
 It tells the relative path of the resource class or method. We can get the URI of a webservice by scanning the Path annotation value.
 The @Path annotation’s value is a relative URI path indicating where the Java class will be hosted: for example, /helloworld. You can also embed variables in the URIs to make a URI path template. For example, you could ask for the name of a user and pass it to the application as a variable in the URI: /helloworld/{username}.
+
+
+
+
+
+
 
 @Get :
 	GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
 	The GET method is used to get the information from the server. This is equivalent to the SELECT statement in SQL. There is no message body in the GET request as it is meant to only fetch the data from the server.
 	GET request should never change the data on server, and should only be used to read data.
 	The @GET annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP GET requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
 @Put:
 	PUT updates an existing resource or creates a new resource.
 	This should be used when we have to replace/update/create the data, which is already present/not present on the server with the data that we pass in the message body.
 	The @PUT annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP PUT requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 
+
+
+
+
+
+
+
 @Post:
 	creates a new resource. It must also be idempotent.
 	This is used to send the data to the server. This can be students information, some XML file or some JPG file. The message body contains the data. POST requests are generally used to create but it can be used to update the existing data as well.
 	The @POST annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP POST requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+
 @Patch: 
 	PATCH is the more technically correct method for partial updates.
 	Submitting partial updates to records is a relatively new operation and is not supported in all APIs.
@@ -152,9 +184,24 @@ The @Path annotation’s value is a relative URI path indicating where the Java 
 		  "phone": null
 		}
 
+
+
+
+
+
+
+
 @Delete:
 	DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
 The @DELETE annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP DELETE requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+
 @PathParam:
 The @PathParam annotation is a type of parameter that you can extract for use in your resource class. URI path parameters are extracted from the request URI, and the parameter names correspond to the URI path template variable names specified in the @Path class-level annotation.
 Example-1
@@ -174,6 +221,13 @@ Example-1
 		.build();  
 	    }  
 	 }  
+
+
+
+
+
+
+
 @FormParam:
 Example-1:
 	@Path("/product")  
@@ -239,20 +293,170 @@ RESTful JAX-RS File Upload Example:
 		    return Response.status(200).entity(output).build();  
 		}  
 	  }  
+	  
+	  
+	  
+	  
+	  
+	  
 @Head:
 Returns only HTTP Header, no Body
 The @HEAD annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP HEAD requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 
+
+
+
+
+
+
 @QueryParam:
-he @QueryParam annotation is a type of parameter that you can extract for use in your resource class. Query parameters are extracted from the request URI query parameters.
+The @QueryParam annotation is a type of parameter that you can extract for use in your resource class. Query parameters are extracted from the request URI query parameters.
+
+
+
+
+
+
 
 @Consumes:
 The @Consumes annotation is used to specify the MIME media types of representations a resource can consume that were sent by the client.
+	he @Consumes annotation is used to specify which MIME media types of representations a resource can accept, or consume, from the client. If @Consumes is applied at the class level, all the response methods accept the specified MIME types by default. If applied at the method level, @Consumes overrides any @Consumes annotations applied at the class level.
 
-The @Produces annotation is used to specify the MIME media types of representations a resource can produce and send back to the client: for example, "text/plain".
+If a resource is unable to consume the MIME type of a client request, the JAX-RS runtime sends back an HTTP 415 (“Unsupported Media Type”) error.
+
+The value of @Consumes is an array of String of acceptable MIME types. For example:
+
+@Consumes({"text/plain,text/html"})
+The following example shows how to apply @Consumes at both the class and method levels:
+
+@Path("/myResource")
+@Consumes("multipart/related")
+public class SomeResource {
+    @POST
+    public String doPost(MimeMultipart mimeMultipartData) {
+        ...
+    }
+
+    @POST
+    @Consumes("application/x-www-form-urlencoded")
+    public String doPost2(FormURLEncodedProperties formData) {
+        ...
+    }
+}
+The doPost method defaults to the MIME media type of the @Consumes annotation at the class level. The doPost2 method overrides the class level @Consumes annotation to specify that it can accept URL-encoded form data.
+
+If no resource methods can respond to the requested MIME type, an HTTP 415 (“Unsupported Media Type”) error is returned to the client.
+
+The HelloWorld example discussed previously in this section can be modified to set the message by using @Consumes, as shown in the following code example:
+@POST
+@Consumes("text/plain")
+public void postClichedMessage(String message) {
+    // Store the message
+}
+In this example, the Java method will consume representations identified by the MIME media type text/plain. Note that the resource method returns void. This means that no representation is returned and that a response with a status code of HTTP 204 (“No Content”) will be returned.
+
+
+
+
+
+
+
+
+@Produces:
+		The @Produces annotation is used to specify the MIME media types of representations a resource can produce and send back to the client: for example, "text/plain".
+		The @Produces annotation is used to specify the MIME media types or representations a resource can produce and send back to the client. If @Produces is applied at the class level, all the methods in a resource can produce the specified MIME types by default. If applied at the method level, the annotation overrides any @Produces annotations applied at the class level.
+		If no methods in a resource are able to produce the MIME type in a client request, the JAX-RS runtime sends back an HTTP “406 Not Acceptable” error.
+		The value of @Produces is an array of String of MIME types. For example:
+		@Produces({"image/jpeg,image/png"})
+		The following example shows how to apply @Produces at both the class and method levels:
+		@Path("/myResource")
+		@Produces("text/plain")
+		public class SomeResource {
+		    @GET
+		    public String doGetAsPlainText() {
+			...
+		    }
+
+		    @GET
+		    @Produces("text/html")
+		    public String doGetAsHtml() {
+			...
+		    }
+		}
+		The doGetAsPlainText method defaults to the MIME media type of the @Produces annotation at the class level. The doGetAsHtml method’s @Produces annotation overrides the class-level @Produces setting and specifies that the method can produce HTML rather than plain text.
+
+		If a resource class is capable of producing more than one MIME media type, the resource method chosen will correspond to the most acceptable media type as declared by the client. More specifically, the Accept header of the HTTP request declares what is most acceptable. For example, if the Accept header is Accept: text/plain, the doGetAsPlainText method will be invoked. Alternatively, if the Accept header is Accept: text/plain;q=0.9, text/html, which declares that the client can accept media types of text/plain and text/html but prefers the latter, the doGetAsHtml method will be invoked.
+
+		More than one media type may be declared in the same @Produces declaration. The following code example shows how this is done:
+
+		@Produces({"application/xml", "application/json"})
+		public String doGetAsXmlOrJson() {
+		    ...
+		}
+		The doGetAsXmlOrJson method will get invoked if either of the media types application/xml and application/json is acceptable. If both are equally acceptable, the former will be chosen because it occurs first. The preceding examples refer explicitly to MIME media types for clarity. It is possible to refer to constant values, which may reduce typographical errors. For more information, see the constant field values of MediaType at http://jsr311.java.net/nonav/releases/1.0/javax/ws/rs/core/MediaType.html.
+
+
+
+
+
+
 
 @Provider
 The @Provider annotation is used for anything that is of interest to the JAX-RS runtime, such as MessageBodyReader and MessageBodyWriter. For HTTP requests, the MessageBodyReader is used to map an HTTP request entity body to method parameters. On the response side, a return value is mapped to an HTTP response entity body by using a MessageBodyWriter. If the application needs to supply additional metadata, such as HTTP headers or a different status code, a method can return a Response that wraps the entity and that can be built using Response.ResponseBuilder.
+	The following example shows how to use MessageBodyReader with the @Consumes and @Provider annotations:
+	@Consumes("application/x-www-form-urlencoded")
+	@Provider
+	public class FormReader implements MessageBodyReader<NameValuePair> {
+	The following example shows how to use MessageBodyWriter with the @Produces and @Provider annotations:
+	@Produces("text/html")
+	@Provider
+	public class FormWriter implements 
+		MessageBodyWriter<Hashtable<String, String>> {
+		
+		
+		
+		
+		
+		
+		
+@Context:
+ @Context can be used to obtain contextual Java types related to the request or response.
+	UriInfo
+	HttpHeaders
+	Request
+	SecurityContext
+	
+	
+	
+UriInfo:  
+@GET
+public String get(@Context UriInfo ui) {
+    MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
+    MultivaluedMap<String, String> pathParams = ui.getPathParameters();
+}
+
+
+
+HttpHeaders:
+@GET
+public String get(@Context HttpHeaders hh) {
+    MultivaluedMap<String, String> headerParams = hh.getRequestHeaders();
+    Map<String, Cookie> pathParams = hh.getCookies();
+}
+
+
+
+SecurityContext:
+
+@GET
+@Produces("text/plain;charset=UTF-8")
+@Path("/hello")
+public String sayHello(@Context SecurityContext sc) {
+        if (sc.isUserInRole("admin")) 
+            return "Hello World!";
+        throw new SecurityException("User is unauthorized.");
+}
+
 ==================================What are the dependencies we need to implement rest API?=======================
 	<!-- for 2.0 version-->
 	<properties>
@@ -305,7 +509,7 @@ The @Provider annotation is used for anything that is of interest to the JAX-RS 
 		</dependency>
 	    </dependencies>
 
-How to configure rest API?
+============================================How to configure rest API?===================================
 Servlet mapping should be updated in the web.xml to point to our web service resource.
 	<?xml version="1.0" encoding="UTF-8"?>
 	<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" 		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 		id="WebApp_ID" version="3.0">
@@ -322,17 +526,33 @@ Servlet mapping should be updated in the web.xml to point to our web service res
 	  <servlet>
 	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
 	    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+	    <!--
+	    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+	    -->
+	    
 	    <!-- for scan the package of rest resource-->
 	    <init-param>
 		<param-name>jersey.config.server.provider.packages</param-name>
 		<param-value>com.javapapers.webservices.rest.jersey</param-value>
 	    </init-param>
+	    
+	    <!--
+	    <init-param>
+          <param-name>com.sun.jersey.config.property.packages</param-name>
+          <param-value>java4s</param-value>
+	  -->
+	  
+        </init-param>
 	   <!-- For file Upload-->
 	   <init-param>  
 	    <param-name>jersey.config.server.provider.classnames</param-name>  
 	    <param-value>org.glassfish.jersey.filter.LoggingFilter;  
 	     org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>  
 	  </init-param>  
+	  <init-param>
+          <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+          <param-value>true</param-value>
+        </init-param>
 	  <init-param>
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>com.howtodoinjava.jersey.CustomApplication</param-value>
@@ -349,7 +569,7 @@ Servlet mapping should be updated in the web.xml to point to our web service res
 	  </servlet-mapping>
 	</web-app>
 
-How to call rest API in our application?
+============================================How to call rest API in our application?==========================
    By using Jersey API: JAX-RS 2.0 (with Jersey 2.11) is used.
    Example-1 
 	public class RESTfulJerseyClient {
@@ -429,8 +649,21 @@ Example-2:
 	}
 
 
-How to handle Exception handling in Restful?
-   1. Jersey ExceptionMapper – Create custom exceptions
+==============================How to handle Exception handling in Restful?==================================
+1. By using Response:
+ @POST
+    @Consumes({"application/xml", "application/json"})
+    public Response createCustomer(Customer customer) {
+        try {
+            long customerId = persist(customer);
+            return Response.created(URI.create("/" + customerId)).build();
+        } catch (Exception e) {
+          throw new WebApplicationException(e, 
+                  Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+2. Jersey ExceptionMapper – Create custom exceptions
 	@Provider
 	public class MissingFileException extends Exception implements
 			ExceptionMapper<MissingFileException>
@@ -450,7 +683,7 @@ How to handle Exception handling in Restful?
 	    }
 	}
 	
-  2.How to throw exception from REST API
+  3.How to throw exception from REST API
 	@Path("/download")
 	public class JerseyService
 	{
@@ -459,9 +692,7 @@ How to handle Exception handling in Restful?
 	    public Response downloadPdfFile(final @PathParam("fileName") String fileName) throws MissingFileException
 	    {
 		final String fullFilePath = "C:/temp/" + fileName;
-
 		File file = new File(fullFilePath);
-
 		if(file.exists() == false){
 		    throw new MissingFileException(fileName + " does not existing on this server !!");
 		}
@@ -501,9 +732,90 @@ How to handle Exception handling in Restful?
 	    }
 	}
 
-How to handle error codes/status codes in rest?
+========================================How to handle error codes/status codes in rest?========================
 
-How to write jersy cleint?
+===============================================How to write jersy cleint?====================================
+
+
+public class CustomerClientXML {
+    public static final Logger logger =
+            Logger.getLogger(CustomerClientXML.class.getCanonicalName());
+
+    public static void main(String[] args) {
+
+        Client client = Client.create();
+        // Define the URL for testing the example application
+        WebResource webResource = 
+               client.resource("http://localhost:8080/customer/rest/Customer");
+
+        // Test the POST method
+        Customer customer = new Customer();
+        Address address = new Address();
+        customer.setAddress(address);
+
+        customer.setId(1);
+        customer.setFirstname("Duke");
+        customer.setLastname("OfJava");
+        address.setNumber(1);
+        address.setStreet("Duke's Drive");
+        address.setCity("JavaTown");
+        address.setZip("1234");
+        address.setState("JA");
+        address.setCountry("USA");
+        customer.setEmail("duke@java.net");
+        customer.setPhone("12341234");
+
+        ClientResponse response = 
+                webResource.type("application/xml").post(ClientResponse.class,
+                customer);
+
+        logger.info("POST status: {0}" + response.getStatus());
+        if (response.getStatus() == 201) {
+            logger.info("POST succeeded");
+        } else {
+            logger.info("POST failed");
+        }
+
+        // Test the GET method using content negotiation
+        response = webResource.path("1").accept(MediaType.APPLICATION_XML)
+                .get(ClientResponse.class);
+        Customer entity = response.getEntity(Customer.class);
+
+        logger.log(Level.INFO, "GET status: {0}", response.getStatus());
+        if (response.getStatus() == 200) {
+            logger.log(Level.INFO, "GET succeeded, city is {0}",
+                    entity.getAddress().getCity());
+        } else {
+            logger.info("GET failed");
+        }
+
+        // Test the DELETE method
+        response = webResource.path("1").delete(ClientResponse.class);
+
+        logger.log(Level.INFO, "DELETE status: {0}", response.getStatus());
+        if (response.getStatus() == 204) {
+            logger.info("DELETE succeeded (no content)");
+        } else {
+            logger.info("DELETE failed");
+        }
+
+        response = webResource.path("1").accept(MediaType.APPLICATION_XML)
+                .get(ClientResponse.class);
+        logger.log(Level.INFO, "GET status: {0}", response.getStatus());
+        if (response.getStatus() == 204) {
+            logger.info("After DELETE, the GET request returned no content.");
+        } else {
+            logger.info("Failed, after DELETE, GET returned a response.");
+        }
+    }
+}
+
+
+
+
+
+
+
 
  Jersey 2 Client API
   JAX-RS Client API is a designed to allow fluent programming model. To create jersey client follow these steps –
@@ -1103,8 +1415,37 @@ public class JerseyService
         return list;
     }
 }  
-
-===============================Jersey REST Client Authentication Example=====================================
+===============================Rest security===============================================
+1. Authorization
+	1.1. Basic authentication mode
+	1.2. Basic authentication – non-prempitive mode
+	1.3. Universal mode
+2.DIGEST Authentication (https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/)
+3. Input Validation
+4. Output Encoding
+5.Cryptography
+6. HTTP Status Codes
+7. OAUTH2 API Keys
+8. Client CERT Authentication
+9. JAX-RS SecurityContext instance
+10. JAR-RS annotations for method level authorization
+	@PermitAll
+	@DenyAll
+	@RolesAllowed
+		
+REST API Security Best Practices:
+	Use only HTTPS protocol so that your whole communication is always encrypted.
+	Never send auth credentials or API keys as query param. They appear in URL and can be logged or tracked easily.
+	Use hardest encryption level always. It will help in having more confidence.
+	For resources exposed by RESTful web services, it’s important to make sure any PUT, POST, and DELETE request is 	protected from Cross Site Request Forgery.
+	Always validate the input data asap it is received in server method. Use only primitive data as input parameter as 		much as possible.
+	Rely on framework provided validation features as they are tested by large community already.
+	
+	
+	
+	
+	
+Jersey REST Client Authentication Example
 1. Jersey Client – HttpAuthenticationFeature
 
 HttpAuthenticationFeature class provides HttpBasic and Digest client authentication capabilities. The feature work in one of 4 modes i.e. BASIC, BASIC NON-PREEMPTIVE, DIGEST and UNIVERSAL. Let’s quickly learn about them.
