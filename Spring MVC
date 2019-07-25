@@ -1,6 +1,6 @@
 ------------------------------------------------Filter:------------------------------------------------
 A filter as the name suggests is a Java class executed by the servlet container for each incoming http request and for each http response. This way, is possible to manage HTTP incoming requests before them reach the resource, such as a JSP page, a servlet or a simple static page; in the same way is possible to manage HTTP outbound response after resource execution.
-
+Filters implement javax.servlet.Filter
 As shown in the figure above, the filter runs in the web container so its definition will also be contained in the web.xml file. In the case of the ListFeeds project one of main filter is the CORS management:
 <filter>
     <filter-name>CORSFilter</filter-name>
@@ -39,6 +39,7 @@ release resources used by the filter
 
 
 ------------------------------------------------Interceptor-------------------------------------------------------
+ Interceptors implement org.springframework.web.servlet.HandlerInterceptor
 Spring Interceptors are similar to Servlet Filters but they acts in Spring Context so are many powerful to manage HTTP Request and Response but they can implement more sofisticated behaviour because can access to all Spring context.
 
 The Spring interceptor are execute in SpringMVC context so they have be defined in rest-servlet.xml file:
@@ -98,3 +99,17 @@ The interceptor include three main methods:
 preHandle: executed before the execution of the target resource
 afterCompletion: executed after the execution of the target resource (after rendering the view)
 posttHandle: Intercept the execution of a handler
+
+
+
+
+
+
+
+
+
+
+
+
+Spring MVC Reference:
+https://java2blog.com/spring-mvc-interceptor-example/
