@@ -8,6 +8,13 @@ Web Services are client and server applications that communicate over the World 
 	 A REST client can access and modify the REST resources.
 	 REST allows that resources have different representations, e.g., text, XML, JSON etc. The REST client can ask for a specific representation via the HTTP protocol (content negotiation).
 	RESTful web services are light weight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
+	REST is the acronym for REpresentational State Transfer. REST is an architectural style for developing applications that can be accessed over the network. REST architectural style was brought in light by Roy Fielding in his doctoral thesis in 2000.
+	Restful Web Services is a stateless client-server architecture where web services are resources and can be identified by their URIs.
+
+REST Client applications can use HTTP GET/POST methods to invoke Restful web services. REST doesn’t specify any specific protocol to use, but in almost all cases it’s used over HTTP/HTTPS. When compared to SOAP web services, these are lightweight and doesn’t follow any standard. We can use XML, JSON, text or any other type of data for request and response.
+JAX-RS is part of JDK, so you don’t need to include anything to use it’s annotations.
+
+
 	
 =======================================What is JAX-RS and Jersey?===========================================
 Java API for RESTful Web Services (JAX-RS) is a Java programming language specification that supports creating web services according to the REST architectural pattern in Java. JAX-RS 
@@ -107,18 +114,22 @@ HTTP Response:
 		
 @Path:
 It tells the relative path of the resource class or method. We can get the URI of a webservice by scanning the Path annotation value.
+The @Path annotation’s value is a relative URI path indicating where the Java class will be hosted: for example, /helloworld. You can also embed variables in the URIs to make a URI path template. For example, you could ask for the name of a user and pass it to the application as a variable in the URI: /helloworld/{username}.
 
 @Get :
 	GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
 	The GET method is used to get the information from the server. This is equivalent to the SELECT statement in SQL. There is no message body in the GET request as it is meant to only fetch the data from the server.
 	GET request should never change the data on server, and should only be used to read data.
+	The @GET annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP GET requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 @Put:
 	PUT updates an existing resource or creates a new resource.
 	This should be used when we have to replace/update/create the data, which is already present/not present on the server with the data that we pass in the message body.
+	The @PUT annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP PUT requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 
 @Post:
 	creates a new resource. It must also be idempotent.
 	This is used to send the data to the server. This can be students information, some XML file or some JPG file. The message body contains the data. POST requests are generally used to create but it can be used to update the existing data as well.
+	The @POST annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP POST requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 @Patch: 
 	PATCH is the more technically correct method for partial updates.
 	Submitting partial updates to records is a relatively new operation and is not supported in all APIs.
@@ -143,8 +154,9 @@ It tells the relative path of the resource class or method. We can get the URI o
 
 @Delete:
 	DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
-
+The @DELETE annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP DELETE requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 @PathParam:
+The @PathParam annotation is a type of parameter that you can extract for use in your resource class. URI path parameters are extracted from the request URI, and the parameter names correspond to the URI path template variable names specified in the @Path class-level annotation.
 Example-1
 	@Path("/hello")  
 	public class HelloService{  
@@ -229,7 +241,18 @@ RESTful JAX-RS File Upload Example:
 	  }  
 @Head:
 Returns only HTTP Header, no Body
+The @HEAD annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP HEAD requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
 
+@QueryParam:
+he @QueryParam annotation is a type of parameter that you can extract for use in your resource class. Query parameters are extracted from the request URI query parameters.
+
+@Consumes:
+The @Consumes annotation is used to specify the MIME media types of representations a resource can consume that were sent by the client.
+
+The @Produces annotation is used to specify the MIME media types of representations a resource can produce and send back to the client: for example, "text/plain".
+
+@Provider
+The @Provider annotation is used for anything that is of interest to the JAX-RS runtime, such as MessageBodyReader and MessageBodyWriter. For HTTP requests, the MessageBodyReader is used to map an HTTP request entity body to method parameters. On the response side, a return value is mapped to an HTTP response entity body by using a MessageBodyWriter. If the application needs to supply additional metadata, such as HTTP headers or a different status code, a method can return a Response that wraps the entity and that can be built using Response.ResponseBuilder.
 ==================================What are the dependencies we need to implement rest API?=======================
 	<!-- for 2.0 version-->
 	<properties>
@@ -1296,6 +1319,32 @@ So for the POST method the 201, Created status is sent. Hence, with the use of t
 409--CONFLICT − states conflict situation while executing the method. For example, adding duplicate entry.
 500--INTERNAL SERVER ERROR − states that the server has thrown some exception while executing the method.
 503--Service Unavailable - When server is not available due to excessive load or may be down for maintainence, this status code is returned to the client.
+
+============================================Some Imporatant classes=======================================================
+org.glassfish.jersey.filter.LoggingFilter
+org.glassfish.jersey.media.multipart.MultiPartFeature
+org.glassfish.jersey.servlet.ServletContainer(jersey.config.server.provider.packages)
+FormDataContentDisposition
+ResponseBuilder
+MessageBodyWritter
+MultivaluedMap<String, String>
+
+
+
+Types Supported for HTTP Request and Response Entity Bodies
+Java Type						Supported Media Types
+byte[]							All media types (*/*)
+java.lang.String					All text media types (text/*)
+java.io.InputStream					All media types (*/*)
+java.io.Reader						All media types (*/*)
+java.io.File						All media types (*/*)
+javax.activation.DataSource				All media types (*/*)
+javax.xml.transform.Source				XML media types (text/xml, application/xml, and application/*+xml)
+javax.xml.bind.JAXBElement and application-supplied JAXB classes 	XML media types (text/xml, application/xml, and application/*+xml)
+MultivaluedMap<String, String>				Form content (application/x-www-form-urlencoded)
+StreamingOutput						All media types (*/*), MessageBodyWriter only
+
+
 
 For more information about status code,please click below link:
 https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#2xx_Success
