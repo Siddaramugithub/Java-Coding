@@ -112,6 +112,7 @@ HTTP Response:
 		@MatrixParam
 		@Stateless
 		@Singleton
+		@BeanParam
 		
 	
 	
@@ -1667,7 +1668,8 @@ org.glassfish.jersey.media.multipart.MultiPartFeature
 org.glassfish.jersey.servlet.ServletContainer(jersey.config.server.provider.packages)
 FormDataContentDisposition
 ResponseBuilder
-MessageBodyWritter
+MessageBodyWritter and MessageBodyReader. ----convert raw data type to java type and vice versa.
+ParamConverter and ParamConverterProvider ----Its convert string to custome data type and Vice Versa
 MultivaluedMap<String, String>
 
 
