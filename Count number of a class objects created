@@ -1,0 +1,18 @@
+package corejava;
+
+public class CountObjectInvokation {
+	static int count = 0;
+	{
+		count++;
+	}
+	/*
+	 * public CountObjectInvokation() { count++; }
+	 */
+	public static void main(String[] args) {
+		CountObjectInvokation invokation1 = new CountObjectInvokation();
+		CountObjectInvokation invokation2 = new CountObjectInvokation();
+		CountObjectInvokation invokation3 = new CountObjectInvokation();
+		CountObjectInvokation invokation4 = new CountObjectInvokation();
+		System.out.println(count);
+	}
+}
