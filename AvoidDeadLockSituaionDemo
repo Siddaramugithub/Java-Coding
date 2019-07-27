@@ -1,1 +1,54 @@
+package corejava;
+
+public class DeadLockDemo {
+	private static String OBJECT_1 = "Lock_1";
+	private static String OBJECT_2 = "Lock_2";
+
+	public static void main(String[] args) {
+		Runnable runnable1 = new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (OBJECT_1) {
+					System.out.println("OBJECT 1 with Lock 1");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					synchronized (OBJECT_2) {
+						System.out.println("OBJECT 2 with Lock 1");
+					}
+				}
+
+			}
+		};
+
+		Runnable runnable2 = new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (OBJECT_1) {
+					System.out.println("OBJECT 2 with Lock 2");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					synchronized (OBJECT_2) {
+						System.out.println("OBJECT 1 with Lock 2");
+					}
+				}
+
+			}
+		};
+		Thread thread1 = new Thread(runnable1);
+		thread1.start();
+		Thread thread2 = new Thread(runnable2);
+		thread2.start();
+
+	}
+}
 
