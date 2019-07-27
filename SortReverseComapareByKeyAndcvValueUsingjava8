@@ -1,0 +1,21 @@
+package corejava;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class SortReverseComapareByKeyAndcvValueUsingjava8 {
+public static void main(String[] args) {
+	Map<String, Integer> map = new HashMap<String, Integer>();
+	map.put("Kolle", 1);
+	map.put("sari", 2);
+	map.put("siddu", 5);
+	map.put("tej", 6);
+	map.put("pavan", 3);
+	ArrayList<Entry<String, Integer>> list = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
+	list.stream().sorted(HashMap.Entry.comparingByKey(Comparator.reverseOrder())).forEach(System.out::print);
+	list.stream().sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder())).forEach(System.out::print);
+}
+}
