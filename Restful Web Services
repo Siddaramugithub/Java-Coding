@@ -1,0 +1,1699 @@
+===================================What are Web Services?=====================================================
+Web Services are client and server applications that communicate over the World Wide Web's (WWW) Hypertext Transfer Protocol (HTTP). As described by the World Wide Web Consortium (W3C), web services provide a standard means of interoperating between software applications running on a variety of platforms and frameworks.
+
+===================================What is restful?====================================================
+	REST (REpresentational State Transfer) is an architectural style for developing web services.Restful is implements the REST architectural style.
+	REST is an architectural style which is based on web-standards and the HTTP protocol. 
+	 A resource is accessed via a common interface based on the HTTP standard methods. 
+	 A REST client can access and modify the REST resources.
+	 REST allows that resources have different representations, e.g., text, XML, JSON etc. The REST client can ask for a specific representation via the HTTP protocol (content negotiation).
+	RESTful web services are light weight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
+	REST is the acronym for REpresentational State Transfer. REST is an architectural style for developing applications that can be accessed over the network. REST architectural style was brought in light by Roy Fielding in his doctoral thesis in 2000.
+	Restful Web Services is a stateless client-server architecture where web services are resources and can be identified by their URIs.
+
+REST Client applications can use HTTP GET/POST methods to invoke Restful web services. REST doesn’t specify any specific protocol to use, but in almost all cases it’s used over HTTP/HTTPS. When compared to SOAP web services, these are lightweight and doesn’t follow any standard. We can use XML, JSON, text or any other type of data for request and response.
+JAX-RS is part of JDK, so you don’t need to include anything to use it’s annotations.
+
+
+	
+=======================================What is JAX-RS and Jersey?===========================================
+Java API for RESTful Web Services (JAX-RS) is a Java programming language specification that supports creating web services according to the REST architectural pattern in Java. JAX-RS 
+
+	
+======================================RESTFul Principles and Constraints==================================
+The architecture is client/server, stateless, layered, and supports caching –
+1)RESTFul Client-Server:
+	Client-server is the typical architecture where the server can be the web server hosting the application, and the client can be as simple as the web browser.
+	The client send's a request to the web service on the server. The server would either reject the request or comply and provide an adequate response to the client.
+2)Stateless:
+	Stateless means that the state of the application is not maintained in REST.
+	For example, if you delete a resource from a server using the DELETE command, you cannot expect that delete information 	to be passed to the next request.
+	As per the REST architecture, a RESTful Web Service should not keep a client state on the server. This restriction is called Statelessness. It is the responsibility of the client to pass its context to the server and then the server can store this context to process the client's further request
+	Advantages of Statelessness:
+		Following are the benefits of statelessness in RESTful Web Services −
+		Web services can treat each method request independently.
+		Web services need not maintain the client's previous interactions. It simplifies the application design.
+		As HTTP is itself a statelessness protocol, RESTful Web Services work seamlessly with the HTTP protocols.
+	Disadvantages of Statelessness:
+		Following are the disadvantages of statelessness in RESTful Web Services −
+		Web services need to get extra information in each request and then interpret to get the client's state in case the client interactions are to be taken care of.
+
+3)Cache:
+	The Cache concept is to help with the problem of stateless which was described in the last point. 
+	Since each server client request is independent in nature, sometimes the client might ask the server for the same 	request again. 
+	This request will go to the server, and the server will give a response. This increases the traffic across the network. The cache is a concept implemented on the client to store requests which have already been sent to the server. So if the same request is given by the client, instead of going to the server, it would go to the cache and get the required information. 
+	Caching refers to storing the server response in the client itself, so that a client need not make a server request for the same resource again and again. A server response should have information about how caching is to be done, so that a client caches the response for a time-period or never caches the server response.
+	
+4)Layered System
+	The concept of a layered system is that any additional layer such as a middleware layer can be inserted between the client and the actual server hosting the RESTFul web service (The middleware layer is where all the business logic is created. This can be an extra service created with which the client could interact with before it makes a call to the web service.). But the introduction of this layer needs to be transparent so that it does not disturb the interaction between the client and the server.
+
+5)Interface/Uniform Contract
+	This is the underlying technique of how RESTful web services should work. RESTful basically works on the HTTP web layer and uses the below key verbs to work with resources on the server
+	POST - To create a resource on the server
+	GET - To retrieve a resource from the server
+	PUT - To change the state of a resource or to update it
+	DELETE - To remove or delete a resource from the server
+
+
+=====================================RESTful Key Elements?============================================
+        1) Resources 
+        2) Request Verbs
+        3) Request Headers
+        4) Request Body
+        5) Response Body
+        6) Response Status codes
+
+=====================================What is HTTPRequest and HttpResponse?============================
+HTTP Request:
+	An HTTP Request has five major parts −
+	Verb − Indicates the HTTP methods such as GET, POST, DELETE, PUT, etc.
+	URI − Uniform Resource Identifier (URI) to identify the resource on the server.
+	HTTP Version − Indicates the HTTP version. For example, HTTP v1.1.
+	Request Header − Contains metadata for the HTTP Request message as key-value pairs. For example, client (or browser) type, format supported by the client, format of the message body, cache settings, etc.77
+	Request Body − Message content or Resource representation.
+HTTP Response:
+	An HTTP Response has four major parts −
+	Status/Response Code − Indicates the Server status for the requested resource. For example, 404 means resource not found and 200 means response is ok.
+	HTTP Version − Indicates the HTTP version. For example HTTP v1.1.
+	Response Header − Contains metadata for the HTTP Response message as keyvalue pairs. For example, content length, content type, response date, server type, etc.
+	Response Body − Response message content or Resource representation.
+
+=====================================Why restful?=====================================================
+	Heterogeneous languages and environments – 
+        This is one of the fundamental reasons which is the same as we have seen for SOAP as well.
+        It enables web applications that are built on various programming languages to communicate with each other
+        With the help of Restful services, these web applications can reside on different environments, some could be on                                        		Windows, and others could be on Linux.
+
+
+================================What are the annotation available in restful======================
+	JAX-RS HTTP Method Annotations:
+		@Post
+		@Put
+		@Patch
+		@Delete
+		@Get
+		@Options
+		@Trace
+		@Head
+	JAX-RS Parameter Annotations:
+		@QueryParam
+		@FormParam
+		@PathParam
+		@DefaultValue
+		@Context
+	JAX-RS Other annotations:
+		@Path
+		@Produce
+		@Consume
+		@HeaderParam
+		@CookieParam
+		@Provider
+		@Crossorigion
+		@MatrixParam
+		@Stateless
+		@Singleton
+		@BeanParam
+		
+	
+	
+	
+	
+@Path:
+It tells the relative path of the resource class or method. We can get the URI of a webservice by scanning the Path annotation value.
+The @Path annotation’s value is a relative URI path indicating where the Java class will be hosted: for example, /helloworld. You can also embed variables in the URIs to make a URI path template. For example, you could ask for the name of a user and pass it to the application as a variable in the URI: /helloworld/{username}.
+
+
+
+
+
+
+
+@Get :
+	GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g., the request has no side effects (idempotent).
+	The GET method is used to get the information from the server. This is equivalent to the SELECT statement in SQL. There is no message body in the GET request as it is meant to only fetch the data from the server.
+	GET request should never change the data on server, and should only be used to read data.
+	The @GET annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP GET requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+@Put:
+	PUT updates an existing resource or creates a new resource.
+	This should be used when we have to replace/update/create the data, which is already present/not present on the server with the data that we pass in the message body.
+	The @PUT annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP PUT requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+
+@Post:
+	creates a new resource. It must also be idempotent.
+	This is used to send the data to the server. This can be students information, some XML file or some JPG file. The message body contains the data. POST requests are generally used to create but it can be used to update the existing data as well.
+	The @POST annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP POST requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+
+@Patch: 
+	PATCH is the more technically correct method for partial updates.
+	Submitting partial updates to records is a relatively new operation and is not supported in all APIs.
+	Some APIs support partial updates via the PUT method, but PATCH is the more technically correct method for partial updates.
+	So let’s add another incomplete record and then PATCH it.
+	Add this employee:
+
+		{
+		  "employeeId": 123,
+		  "firstName": "Donald",
+		  "email": "dahammer@asgard.com"
+		}
+	Then, use GET to retrieve employee id 123.
+
+		{
+		  "employeeId": 123,
+		  "firstName": "Donald",
+		  "lastName": null,
+		  "email": "dahammer@asgard.com",
+		  "phone": null
+		}
+
+
+
+
+
+
+
+
+@Delete:
+	DELETE removes the resources. The operations are idempotent. They can get repeated without leading to different results.
+The @DELETE annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP DELETE requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+
+@PathParam:
+The @PathParam annotation is a type of parameter that you can extract for use in your resource class. URI path parameters are extracted from the request URI, and the parameter names correspond to the URI path template variable names specified in the @Path class-level annotation.
+Example-1
+	@Path("/hello")  
+	public class HelloService{  
+	    @GET  
+	    @Path("{year}/{month}/{day}")  
+	    public Response getDate(  
+		    @PathParam("year") int year,  
+		    @PathParam("month") int month,   
+		    @PathParam("day") int day) {  
+
+	       String date = year + "/" + month + "/" + day;  
+
+	       return Response.status(200)  
+		.entity("getDate is called, year/month/day : " + date)  
+		.build();  
+	    }  
+	 }  
+
+
+
+
+
+
+
+@FormParam:
+Example-1:
+	@Path("/product")  
+	public class ProductService{  
+	    @POST  
+	    @Path("/add")  
+	    public Response addUser(  
+		@FormParam("id") int id,  
+		@FormParam("name") String name,  
+		@FormParam("price") float price) {  
+
+		return Response.status(200)  
+		    .entity(" Product added successfuly!<br> Id: "+id+"<br> Name: " + name+"<br> Price: "+price)  
+		    .build();  
+	    }  
+	}  
+JAX-RS File Download Example:
+	We can download text files, image files, pdf files, excel files in java by JAX-RS API. To do so we need to write few lines of code only. Here, we are using jersey implementation for developing JAX-RS file download examples.
+	You need to specify different content type to download different files. The @Produces annotation is used to specify the type of file content.
+	@Produces("text/plain"): for downloading text file.
+	@Produces("image/png"): for downloading png image file.
+	@Produces("application/pdf"): for downloading PDF file.
+	@Produces("application/vnd.ms-excel"): for downloading excel file.
+	@Produces("application/msword"): for downloading ms word file.
+Example for download file:
+	@Path("/files")  
+	public class FileDownloadService {  
+	    private static final String FILE_PATH = "c:\\myimage.png";  
+	    @GET  
+	    @Path("/image")  
+	    @Produces("image/png")  
+	    public Response getFile() {  
+		File file = new File(FILE_PATH);  
+		ResponseBuilder response = Response.ok((Object) file);  
+		response.header("Content-Disposition","attachment; filename=\"javatpoint_image.png\"");  
+		return response.build();  
+
+	    }  
+	 }  
+RESTful JAX-RS File Upload Example:
+	@Path("/files")  
+	public class FileUploadService {  
+	    @POST  
+	    @Path("/upload")  
+	    @Consumes(MediaType.MULTIPART_FORM_DATA)  
+	    public Response uploadFile(  
+		    @FormDataParam("file") InputStream uploadedInputStream,  
+		    @FormDataParam("file") FormDataContentDisposition fileDetail) {  
+		    String fileLocation = "e://" + fileDetail.getFileName();  
+			    //saving file  
+		    try {  
+			FileOutputStream out = new FileOutputStream(new File(fileLocation));  
+			int read = 0;  
+			byte[] bytes = new byte[1024];  
+			out = new FileOutputStream(new File(fileLocation));  
+			while ((read = uploadedInputStream.read(bytes)) != -1) {  
+			    out.write(bytes, 0, read);  
+			}  
+			out.flush();  
+			out.close();  
+		    } catch (IOException e) {e.printStackTrace();}  
+		    String output = "File successfully uploaded to : " + fileLocation;  
+		    return Response.status(200).entity(output).build();  
+		}  
+	  }  
+	  
+	  
+	  
+	  
+	  
+	  
+@Head:
+Returns only HTTP Header, no Body
+The @HEAD annotation is a request method designator and corresponds to the similarly named HTTP method. The Java method annotated with this request method designator will process HTTP HEAD requests. The behavior of a resource is determined by the HTTP method to which the resource is responding.
+
+
+
+
+
+
+
+@QueryParam:
+The @QueryParam annotation is a type of parameter that you can extract for use in your resource class. Query parameters are extracted from the request URI query parameters.
+
+
+
+
+
+
+
+@Consumes:
+The @Consumes annotation is used to specify the MIME media types of representations a resource can consume that were sent by the client.
+	he @Consumes annotation is used to specify which MIME media types of representations a resource can accept, or consume, from the client. If @Consumes is applied at the class level, all the response methods accept the specified MIME types by default. If applied at the method level, @Consumes overrides any @Consumes annotations applied at the class level.
+
+If a resource is unable to consume the MIME type of a client request, the JAX-RS runtime sends back an HTTP 415 (“Unsupported Media Type”) error.
+
+The value of @Consumes is an array of String of acceptable MIME types. For example:
+
+@Consumes({"text/plain,text/html"})
+The following example shows how to apply @Consumes at both the class and method levels:
+
+@Path("/myResource")
+@Consumes("multipart/related")
+public class SomeResource {
+    @POST
+    public String doPost(MimeMultipart mimeMultipartData) {
+        ...
+    }
+
+    @POST
+    @Consumes("application/x-www-form-urlencoded")
+    public String doPost2(FormURLEncodedProperties formData) {
+        ...
+    }
+}
+The doPost method defaults to the MIME media type of the @Consumes annotation at the class level. The doPost2 method overrides the class level @Consumes annotation to specify that it can accept URL-encoded form data.
+
+If no resource methods can respond to the requested MIME type, an HTTP 415 (“Unsupported Media Type”) error is returned to the client.
+
+The HelloWorld example discussed previously in this section can be modified to set the message by using @Consumes, as shown in the following code example:
+@POST
+@Consumes("text/plain")
+public void postClichedMessage(String message) {
+    // Store the message
+}
+In this example, the Java method will consume representations identified by the MIME media type text/plain. Note that the resource method returns void. This means that no representation is returned and that a response with a status code of HTTP 204 (“No Content”) will be returned.
+
+
+
+
+
+
+
+
+@Produces:
+		The @Produces annotation is used to specify the MIME media types of representations a resource can produce and send back to the client: for example, "text/plain".
+		The @Produces annotation is used to specify the MIME media types or representations a resource can produce and send back to the client. If @Produces is applied at the class level, all the methods in a resource can produce the specified MIME types by default. If applied at the method level, the annotation overrides any @Produces annotations applied at the class level.
+		If no methods in a resource are able to produce the MIME type in a client request, the JAX-RS runtime sends back an HTTP “406 Not Acceptable” error.
+		The value of @Produces is an array of String of MIME types. For example:
+		@Produces({"image/jpeg,image/png"})
+		The following example shows how to apply @Produces at both the class and method levels:
+		@Path("/myResource")
+		@Produces("text/plain")
+		public class SomeResource {
+		    @GET
+		    public String doGetAsPlainText() {
+			...
+		    }
+
+		    @GET
+		    @Produces("text/html")
+		    public String doGetAsHtml() {
+			...
+		    }
+		}
+		The doGetAsPlainText method defaults to the MIME media type of the @Produces annotation at the class level. The doGetAsHtml method’s @Produces annotation overrides the class-level @Produces setting and specifies that the method can produce HTML rather than plain text.
+
+		If a resource class is capable of producing more than one MIME media type, the resource method chosen will correspond to the most acceptable media type as declared by the client. More specifically, the Accept header of the HTTP request declares what is most acceptable. For example, if the Accept header is Accept: text/plain, the doGetAsPlainText method will be invoked. Alternatively, if the Accept header is Accept: text/plain;q=0.9, text/html, which declares that the client can accept media types of text/plain and text/html but prefers the latter, the doGetAsHtml method will be invoked.
+
+		More than one media type may be declared in the same @Produces declaration. The following code example shows how this is done:
+
+		@Produces({"application/xml", "application/json"})
+		public String doGetAsXmlOrJson() {
+		    ...
+		}
+		The doGetAsXmlOrJson method will get invoked if either of the media types application/xml and application/json is acceptable. If both are equally acceptable, the former will be chosen because it occurs first. The preceding examples refer explicitly to MIME media types for clarity. It is possible to refer to constant values, which may reduce typographical errors. For more information, see the constant field values of MediaType at http://jsr311.java.net/nonav/releases/1.0/javax/ws/rs/core/MediaType.html.
+
+
+
+
+
+
+
+@Provider
+The @Provider annotation is used for anything that is of interest to the JAX-RS runtime, such as MessageBodyReader and MessageBodyWriter. For HTTP requests, the MessageBodyReader is used to map an HTTP request entity body to method parameters. On the response side, a return value is mapped to an HTTP response entity body by using a MessageBodyWriter. If the application needs to supply additional metadata, such as HTTP headers or a different status code, a method can return a Response that wraps the entity and that can be built using Response.ResponseBuilder.
+	The following example shows how to use MessageBodyReader with the @Consumes and @Provider annotations:
+	@Consumes("application/x-www-form-urlencoded")
+	@Provider
+	public class FormReader implements MessageBodyReader<NameValuePair> {
+	The following example shows how to use MessageBodyWriter with the @Produces and @Provider annotations:
+	@Produces("text/html")
+	@Provider
+	public class FormWriter implements 
+		MessageBodyWriter<Hashtable<String, String>> {
+		
+		
+		
+		
+		
+		
+		
+@Context:
+ @Context can be used to obtain contextual Java types related to the request or response.
+	UriInfo
+	HttpHeaders
+	Request
+	SecurityContext
+	
+	
+	
+UriInfo:  
+@GET
+public String get(@Context UriInfo ui) {
+    MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
+    MultivaluedMap<String, String> pathParams = ui.getPathParameters();
+}
+
+
+
+HttpHeaders:
+@GET
+public String get(@Context HttpHeaders hh) {
+    MultivaluedMap<String, String> headerParams = hh.getRequestHeaders();
+    Map<String, Cookie> pathParams = hh.getCookies();
+}
+
+
+
+SecurityContext:
+
+@GET
+@Produces("text/plain;charset=UTF-8")
+@Path("/hello")
+public String sayHello(@Context SecurityContext sc) {
+        if (sc.isUserInRole("admin")) 
+            return "Hello World!";
+        throw new SecurityException("User is unauthorized.");
+}
+
+==================================What are the dependencies we need to implement rest API?=======================
+	<!-- for 2.0 version-->
+	<properties>
+		<jersey2.version>2.19</jersey2.version>
+		<jaxrs.version>2.0.1</jaxrs.version>
+	    </properties>
+	    <dependencies>
+		<!-- JAX-RS -->
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>${jaxrs.version}</version>
+		</dependency>
+		<!-- Jersey 2.19 -->
+		<dependency>
+		    <groupId>org.glassfish.jersey.containers</groupId>
+		    <artifactId>jersey-container-servlet</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-server</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-client</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+	   	 <groupId>org.glassfish.jersey.media</groupId>
+	   	 <artifactId>jersey-media-multipart</artifactId>
+	    	<version>2.19</version>
+		</dependency>
+		<!--The Moxy library takes care of converting the Java object into JSON.-->
+		<dependency>
+	   	 <groupId>org.glassfish.jersey.media</groupId>
+	  	  <artifactId>jersey-media-moxy</artifactId>
+	  	  <version>2.19</version>
+		</dependency>
+		<dependency>
+  		  <groupId>org.glassfish.jersey.media</groupId>
+   		 <artifactId>jersey-media-json-processing</artifactId>
+   		 <version>2.19</version>
+		</dependency>
+		<dependency>
+   		 <groupId>com.google.code.gson</groupId>
+   		 <artifactId>gson</artifactId>
+	    	<version>2.2.4</version>
+		</dependency>
+	    </dependencies>
+
+============================================How to configure rest API?===================================
+Servlet mapping should be updated in the web.xml to point to our web service resource.
+	<?xml version="1.0" encoding="UTF-8"?>
+	<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" 		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 		id="WebApp_ID" version="3.0">
+	  <display-name>RESTful Jersey Hello World</display-name>
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	    <welcome-file>index.htm</welcome-file>
+	    <welcome-file>index.jsp</welcome-file>
+	    <welcome-file>default.html</welcome-file>
+	    <welcome-file>default.htm</welcome-file>
+	    <welcome-file>default.jsp</welcome-file>
+	  </welcome-file-list>
+
+	  <servlet>
+	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
+	    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+	    <!--
+	    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+	    -->
+	    
+	    <!-- for scan the package of rest resource-->
+	    <init-param>
+		<param-name>jersey.config.server.provider.packages</param-name>
+		<param-value>com.javapapers.webservices.rest.jersey</param-value>
+	    </init-param>
+	    
+	    <!--
+	    <init-param>
+          <param-name>com.sun.jersey.config.property.packages</param-name>
+          <param-value>java4s</param-value>
+	  -->
+	  
+        </init-param>
+	   <!-- For file Upload-->
+	   <init-param>  
+	    <param-name>jersey.config.server.provider.classnames</param-name>  
+	    <param-value>org.glassfish.jersey.filter.LoggingFilter;  
+	     org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>  
+	  </init-param>  
+	  <init-param>
+          <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+          <param-value>true</param-value>
+        </init-param>
+	  <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.howtodoinjava.jersey.CustomApplication</param-value>
+          </init-param>
+	<init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>org.glassfish.jersey.filter.LoggingFilter</param-value>
+        </init-param>
+	    <load-on-startup>1</load-on-startup>
+	  </servlet>
+	  <servlet-mapping>
+	    <servlet-name>RESTful Jersey Hello World Service</servlet-name>
+	    <url-pattern>/rest/*</url-pattern>
+	  </servlet-mapping>
+	</web-app>
+
+============================================How to call rest API in our application?==========================
+   By using Jersey API: JAX-RS 2.0 (with Jersey 2.11) is used.
+   Example-1 
+	public class RESTfulJerseyClient {
+	private static final String webServiceURI = "http://localhost:8080/RESTful_Jersey_Hello_World";
+	public static void main(String[] args) {
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		URI serviceURI = UriBuilder.fromUri(webServiceURI).build();
+		WebTarget webTarget = client.target(serviceURI);
+		// response
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_PLAIN).get(Response.class).toString());
+		// text
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_PLAIN).get(String.class));
+		// xml
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_XML).get(String.class));
+		// html
+		System.out.println(webTarget.path("rest").path("helloworld").request()
+				.accept(MediaType.TEXT_HTML).get(String.class));
+	}
+}
+
+Example-2:
+	public class Tester {
+	  public static void main(String[] args) {
+	      ClientConfig config = new ClientConfig();
+	      Client client = ClientBuilder.newClient(config);
+	      WebTarget service = client.target(getBaseURI());
+	      // create one todo
+	      Todo todo = new Todo("3", "Blabla");
+	      Response response = service.path("rest").path("todos").path(todo.getId()).request(MediaType.APPLICATION_XML).put(Entity.entity(todo,MediaType.APPLICATION_XML),Response.class);
+	      // Return code should be 201 == created resource
+	      System.out.println(response.getStatus());
+	      // Get the Todos
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.TEXT_XML).get(String.class));
+	//    // Get JSON for application (Make sure to add the jersey-media-json-jackson dependency to add support for JSON)
+	//    System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_JSON).get(String.class));
+	      // Get XML for application
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	      //Get Todo with id 1
+	      Response checkDelete = service.path("rest").path("todos/1").request().accept(MediaType.APPLICATION_XML).get();
+	      //Delete Todo with id 1
+	      service.path("rest").path("todos/1").request().delete();
+	      //Get get all Todos id 1 should be deleted
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	      //Create a Todo
+	      Form form =new Form();
+	      form.param("id", "4");
+	      form.param("summary","Demonstration of the client lib for forms");
+	      response = service.path("rest").path("todos").request().post(Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED),Response.class);
+	      System.out.println("Form response " + response.getStatus());
+	      //Get all the todos, id 4 should have been created
+	      System.out.println(service.path("rest").path("todos").request().accept(MediaType.APPLICATION_XML).get(String.class));
+	  }
+	  private static URI getBaseURI() {
+	    return UriBuilder.fromUri("http://localhost:8080/com.vogella.jersey.todo").build();
+	  }
+	}
+  Example-3 for File upload jersey client
+	public static void main(String[] args) throws IOException
+	{
+	    final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
+
+	    final FileDataBodyPart filePart = new FileDataBodyPart("file", new File("C:/temp/sample.pdf"));
+	    FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
+	    final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.field("foo", "bar").bodyPart(filePart);
+
+	    final WebTarget target = client.target("http://localhost:8080/JerseyDemos/rest/upload/pdf");
+	    final Response response = target.request().post(Entity.entity(multipart, multipart.getMediaType()));
+
+	    //Use response object to verify upload success
+
+	    formDataMultiPart.close();
+	    multipart.close();
+	}
+
+
+==============================How to handle Exception handling in Restful?==================================
+1. By using Response:
+ @POST
+    @Consumes({"application/xml", "application/json"})
+    public Response createCustomer(Customer customer) {
+        try {
+            long customerId = persist(customer);
+            return Response.created(URI.create("/" + customerId)).build();
+        } catch (Exception e) {
+          throw new WebApplicationException(e, 
+                  Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+2. Jersey ExceptionMapper – Create custom exceptions
+	@Provider
+	public class MissingFileException extends Exception implements
+			ExceptionMapper<MissingFileException>
+	{
+	    private static final long serialVersionUID = 1L;
+
+	    public MissingFileException() {
+		super("No File found with given name !!");
+	    }
+	    public MissingFileException(String string) {
+		super(string);
+	    }
+	    @Override
+	    public Response toResponse(MissingFileException exception)
+	    {
+		return Response.status(404).entity(exception.getMessage()).type("text/plain").build();
+	    }
+	}
+	
+  3.How to throw exception from REST API
+	@Path("/download")
+	public class JerseyService
+	{
+	    @GET
+	    @Path("/{fileName}")
+	    public Response downloadPdfFile(final @PathParam("fileName") String fileName) throws MissingFileException
+	    {
+		final String fullFilePath = "C:/temp/" + fileName;
+		File file = new File(fullFilePath);
+		if(file.exists() == false){
+		    throw new MissingFileException(fileName + " does not existing on this server !!");
+		}
+		StreamingOutput fileStream =  new StreamingOutput()
+		{
+		    @Override
+		    public void write(java.io.OutputStream output) throws IOException
+		    {
+			try
+			{
+			    java.nio.file.Path path = Paths.get(fullFilePath);
+			    byte[] data = Files.readAllBytes(path);
+			    output.write(data);
+			    output.flush();
+			}
+			catch (IOException e)
+			{
+			    throw new IOException("Error while reading file :: '"+fileName+"' !!");
+			}
+		    }
+		};
+		return Response
+			.ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
+			.header("content-disposition","attachment; filename = '"+fileName)
+			.build();
+	    }
+	}
+  3. Uncaught Exception Handling
+	@Provider
+	public class UncaughtException extends Throwable implements ExceptionMapper<Throwable>
+	{
+	    private static final long serialVersionUID = 1L;
+	    @Override
+	    public Response toResponse(Throwable exception)
+	    {
+		return Response.status(500).entity("Something bad happened. Please try again !!").type("text/plain").build();
+	    }
+	}
+
+========================================How to handle error codes/status codes in rest?========================
+
+===============================================How to write jersy cleint?====================================
+
+
+public class CustomerClientXML {
+    public static final Logger logger =
+            Logger.getLogger(CustomerClientXML.class.getCanonicalName());
+
+    public static void main(String[] args) {
+
+        Client client = Client.create();
+        // Define the URL for testing the example application
+        WebResource webResource = 
+               client.resource("http://localhost:8080/customer/rest/Customer");
+
+        // Test the POST method
+        Customer customer = new Customer();
+        Address address = new Address();
+        customer.setAddress(address);
+
+        customer.setId(1);
+        customer.setFirstname("Duke");
+        customer.setLastname("OfJava");
+        address.setNumber(1);
+        address.setStreet("Duke's Drive");
+        address.setCity("JavaTown");
+        address.setZip("1234");
+        address.setState("JA");
+        address.setCountry("USA");
+        customer.setEmail("duke@java.net");
+        customer.setPhone("12341234");
+
+        ClientResponse response = 
+                webResource.type("application/xml").post(ClientResponse.class,
+                customer);
+
+        logger.info("POST status: {0}" + response.getStatus());
+        if (response.getStatus() == 201) {
+            logger.info("POST succeeded");
+        } else {
+            logger.info("POST failed");
+        }
+
+        // Test the GET method using content negotiation
+        response = webResource.path("1").accept(MediaType.APPLICATION_XML)
+                .get(ClientResponse.class);
+        Customer entity = response.getEntity(Customer.class);
+
+        logger.log(Level.INFO, "GET status: {0}", response.getStatus());
+        if (response.getStatus() == 200) {
+            logger.log(Level.INFO, "GET succeeded, city is {0}",
+                    entity.getAddress().getCity());
+        } else {
+            logger.info("GET failed");
+        }
+
+        // Test the DELETE method
+        response = webResource.path("1").delete(ClientResponse.class);
+
+        logger.log(Level.INFO, "DELETE status: {0}", response.getStatus());
+        if (response.getStatus() == 204) {
+            logger.info("DELETE succeeded (no content)");
+        } else {
+            logger.info("DELETE failed");
+        }
+
+        response = webResource.path("1").accept(MediaType.APPLICATION_XML)
+                .get(ClientResponse.class);
+        logger.log(Level.INFO, "GET status: {0}", response.getStatus());
+        if (response.getStatus() == 204) {
+            logger.info("After DELETE, the GET request returned no content.");
+        } else {
+            logger.info("Failed, after DELETE, GET returned a response.");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+ Jersey 2 Client API
+  JAX-RS Client API is a designed to allow fluent programming model. To create jersey client follow these steps –
+	Use ClientBuilder.newClient() static method.
+	Use client.target() method on above obtained client instance.
+	Get Invocation.Builder using webTarget.request() method on WebTarget instance obtained in second step.
+	Execute invocationBuilder.get(), put(), post() or delete() methods to invoke corresponding REST APIs.
+	Jersey ClientBuilder Example
+	--Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+	--WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+	--Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+	--Response response = invocationBuilder.post(Entity.entity(emp, MediaType.APPLICATION_XML));
+	3. HTTP GET – Collection/List of Entities
+			@GET
+		@Path("/employees")
+		@Produces(MediaType.APPLICATION_XML)
+		public Employees getAllEmployees()
+		{
+		    Employees list = new Employees();
+		    list.setEmployeeList(new ArrayList<Employee>());
+
+		    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+		    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+		    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+
+		    return list;
+		}
+	This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.get();
+
+		Employees employees = response.readEntity(Employees.class);
+		List<Employee> listOfEmployees = employees.getEmployeeList();
+
+		System.out.println(response.getStatus());
+		System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+
+		Output:
+
+		200
+		[Employee [id=1, name=Lokesh Gupta], Employee [id=2, name=Alex Kolenchiskey], Employee [id=3, name=David Kameron]]
+	HTTP GET – Single Entitiy
+
+		This is the API code written for retrieving single employee based on its id.
+		@GET
+		@Path("/employees/{id}")
+		@Produces(MediaType.APPLICATION_XML)
+		public Response updateEmployeeById(@PathParam("id") Integer id)
+		{
+		    if(id  < 0){
+			return Response.noContent().build();
+		    }
+		    Employee emp = new Employee();
+
+		    emp.setId(id);
+		    emp.setName("Lokesh Gupta");
+
+		    GenericEntity<Employee> entity = new GenericEntity<Employee>(emp, Employee.class);
+		    return Response.ok().entity(entity).build();
+		}
+	This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.get();
+
+		Employee employee = response.readEntity(Employee.class);
+
+		System.out.println(response.getStatus());
+		System.out.println(employee);
+
+		Output:
+
+		200
+		Employee [id=1, name=Lokesh Gupta]
+	HTTP POST
+		This is the API code written for adding an employee in the collection.
+
+		@POST
+		@Path("/employees")
+		@Consumes(MediaType.APPLICATION_XML)
+		@Produces(MediaType.APPLICATION_XML)
+		public Response addEmployee( Employee e ) throws URISyntaxException
+		{
+		    if(e == null){
+			return Response.status(400).entity("Please add employee details !!").build();
+		    }
+
+		    if(e.getName() == null) {
+			return Response.status(400).entity("Please provide the employee name !!").build();
+		    }
+
+		    return Response.created(new URI("/rest/employees/"+e.getId())).build();
+		}
+		Jersey Client Code
+
+		This RESTful client code will access above API and print the response in the console.
+
+		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+		WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+
+		Employee emp = new Employee();
+		emp.setId(1);
+		emp.setName("David Feezor");
+
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+		Response response = invocationBuilder.post(Entity.entity(emp, MediaType.APPLICATION_XML));
+
+		System.out.println(response.getStatus());
+		System.out.println(response.readEntity(String.class));
+
+		Output:
+
+		201
+		
+HTTP PUT
+
+This is the API code written for updating an employee name by its id.
+
+@PUT
+@Path("/employees/{id}")
+@Consumes(MediaType.APPLICATION_XML)
+@Produces(MediaType.APPLICATION_XML)
+public Response updateEmployeeById(@PathParam("id") Integer id, Employee e)
+{
+    Employee updatedEmployee = new Employee();
+     
+    if(e.getName() == null) {
+        return Response.status(400).entity("Please provide the employee name !!").build();
+    }
+     
+    updatedEmployee.setId(id);
+    updatedEmployee.setName(e.getName());
+     
+    return Response.ok().entity(updatedEmployee).build();
+}
+Jersey 2 Client Code
+
+This RESTful client code will access above API and print the response in the console.
+
+Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+ 
+Employee emp = new Employee();
+emp.setId(1);
+emp.setName("David Feezor");
+ 
+Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
+Response response = invocationBuilder.put(Entity.entity(emp, MediaType.APPLICATION_XML));
+ 
+Employee employee = response.readEntity(Employee.class);
+     
+System.out.println(response.getStatus());
+System.out.println(employee);
+ 
+Output:
+ 
+200
+Employee [id=1, name=David Feezor]
+7. HTTP DELETE
+
+This is the API code written for removing an employee from the collection by id.
+
+@DELETE
+@Path("/employees/{id}")
+public Response deleteEmployeeById(@PathParam("id") Integer id)
+{      
+    return Response.status(202).entity("Employee deleted successfully !!").build();
+}
+Jersey Client Code
+
+This RESTful client code will access above API and print the response in the console.
+
+Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees").path("1");
+ 
+Invocation.Builder invocationBuilder =  webTarget.request();
+Response response = invocationBuilder.delete();
+ 
+System.out.println(response.getStatus());
+System.out.println(response.readEntity(String.class));
+ 
+Output:
+ 
+202
+Employee deleted successfully !!
+8. Model classes and Configuration files
+
+Listed below are other used files to create this Jersey 2 client example.
+
+Employees.java
+
+package com.howtodoinjava.jersey;
+ 
+import java.util.List;
+ 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+ 
+@XmlRootElement(name = "employeeList")
+@XmlAccessorType (XmlAccessType.FIELD)
+public class Employees
+{
+    @XmlElement(name="employee")
+    private List<Employee> employeeList;
+ 
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+ 
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+}
+Employee.java
+
+package com.howtodoinjava.jersey;
+ 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+ 
+@XmlRootElement(name = "employee")
+@XmlAccessorType (XmlAccessType.FIELD)
+public class Employee
+{
+    private Integer id;
+    private String name;
+     
+    public Employee() {
+         
+    }
+     
+    public Employee(Integer id, String name) {
+        this.id  = id;
+        this.name = name;
+    }
+ 
+    public Integer getId() {
+        return id;
+    }
+ 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+ 
+    public String getName() {
+        return name;
+    }
+ 
+    public void setName(String name) {
+        this.name = name;
+    }
+     
+    @Override
+    public String toString() {
+        return "Employee [id=" + id + ", name=" + name + "]";
+    }
+}
+
+
+Custom logging?
+
+How to set Cookie in REST API Response?
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getAllEployees()
+	{
+	    Employees list = new Employees();
+	    list.setEmployeeList(new ArrayList<Employee>());
+
+	    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+	    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+	    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+
+	    return Response.ok().entity(list).cookie(new NewCookie("cookieResponse", "cookieValueInReturn")).build();
+	}
+
+Jersey + MOXy JSON - Manually adding MoxyJsonFeature
+	public class CustomApplication extends Application
+	{
+	    //Add Service APIs
+	    @Override
+	    public Set<Class<?>> getClasses()
+	    {
+		Set<Class<?>> resources = new HashSet<Class<?>>();
+
+		//register REST modules
+		resources.add(JerseyService.class);
+
+		//Manually adding MOXyJSONFeature
+		resources.add(org.glassfish.jersey.moxy.json.MoxyJsonFeature.class);
+
+		//Configure Moxy behavior
+		resources.add(JsonMoxyConfigurationContextResolver.class);
+
+		return resources;
+	    }
+	}
+Customize behavior using MoxyJsonConfig:
+	@Provider
+	public class JsonMoxyConfigurationContextResolver implements ContextResolver<MoxyJsonConfig>
+	{
+
+	    private final MoxyJsonConfig config;
+
+	    public JsonMoxyConfigurationContextResolver()
+	    {
+		final Map<String, String> namespacePrefixMapper = new HashMap<String, String>();
+		namespacePrefixMapper.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+
+		config = new MoxyJsonConfig()
+			.setNamespacePrefixMapper(namespacePrefixMapper)
+			.setNamespaceSeparator(':')
+			.setAttributePrefix("")
+			.setValueWrapper("value")
+			.property(JAXBContextProperties.JSON_WRAPPER_AS_ARRAY_NAME, true)
+			.setFormattedOutput(true)
+			.setIncludeRoot(true)
+			.setMarshalEmptyCollections(true);
+	    }
+
+	    @Override
+	    public MoxyJsonConfig getContext(Class<?> objectType)
+	    {
+		return config;
+	    }
+	}
+Jersey + JSONP Example
+	public class CustomApplication extends ResourceConfig
+	{
+	    public CustomApplication()
+	    {
+		register(JsonProcessingFeature.class);
+		packages("com.howtodoinjava.jersey");
+		packages("org.glassfish.jersey.examples.jsonp");
+		register(LoggingFilter.class);
+		property(JsonGenerator.PRETTY_PRINTING, true);
+
+	    }
+	}
+Jersey + Google Gson Example
+	public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
+		MessageBodyReader<Object> {
+	    private static final String UTF_8 = "UTF-8";
+
+	    private Gson gson;
+
+	    //Customize the gson behavior here
+	    private Gson getGson() {
+		if (gson == null) {
+		    final GsonBuilder gsonBuilder = new GsonBuilder();
+		    gson = gsonBuilder.disableHtmlEscaping()
+			    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+			    .setPrettyPrinting()
+			    .serializeNulls()
+			    .create();
+		}
+		return gson;
+	    }
+
+	    @Override
+	    public boolean isReadable(Class<?> type, Type genericType,
+		    java.lang.annotation.Annotation[] annotations, MediaType mediaType) {
+		return true;
+	    }
+
+	    @Override
+	    public Object readFrom(Class<Object> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType,
+		    MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+		InputStreamReader streamReader = null;
+		try {
+		    streamReader = new InputStreamReader(entityStream, UTF_8);
+		} catch (UnsupportedEncodingException e) {
+		    e.printStackTrace();
+		}
+		try {
+		    Type jsonType;
+		    if (type.equals(genericType)) {
+			jsonType = type;
+		    } else {
+			jsonType = genericType;
+		    }
+		    return getGson().fromJson(streamReader, jsonType);
+		} finally {
+		    try {
+			streamReader.close();
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    }
+		}
+	    }
+
+	    @Override
+	    public boolean isWriteable(Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType) {
+		return true;
+	    }
+
+	    @Override
+	    public long getSize(Object object, Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType) {
+		return -1;
+	    }
+
+	    @Override
+	    public void writeTo(Object object, Class<?> type, Type genericType,
+		    Annotation[] annotations, MediaType mediaType,
+		    MultivaluedMap<String, Object> httpHeaders,
+		    OutputStream entityStream) throws IOException,
+		    WebApplicationException {
+		OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8);
+		try {
+		    Type jsonType;
+		    if (type.equals(genericType)) {
+			jsonType = type;
+		    } else {
+			jsonType = genericType;
+		    }
+		    getGson().toJson(object, jsonType, writer);
+		} finally {
+		    writer.close();
+		}
+	    }
+	}
+	Register Gson Provider
+
+	Now register above class with application resource config.
+
+	package com.howtodoinjava.jersey;
+
+	import org.glassfish.jersey.filter.LoggingFilter;
+	import org.glassfish.jersey.server.ResourceConfig;
+	import com.howtodoinjava.jersey.provider.GsonMessageBodyHandler;
+
+	public class CustomApplication extends ResourceConfig
+	{
+	    public CustomApplication()
+	    {
+		packages("com.howtodoinjava.jersey");
+		register(LoggingFilter.class);
+		register(GsonMessageBodyHandler.class);
+	    }
+	}
+	Extending Gson Functionality
+
+	You can extend/customize Gson behavior anytime inside GsonMessageBodyHandler.getGson() method.
+
+	private Gson getGson() {
+	    if (gson == null) {
+		final GsonBuilder gsonBuilder = new GsonBuilder();
+		gson = gsonBuilder.disableHtmlEscaping()
+			.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+			.setPrettyPrinting()
+			.serializeNulls()
+			.create();
+	    }
+	    return gson;
+	}
+	
+	
+Jersey REST API Security Example
+
+@Provider
+public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter
+{
+     
+    @Context
+    private ResourceInfo resourceInfo;
+     
+    private static final String AUTHORIZATION_PROPERTY = "Authorization";
+    private static final String AUTHENTICATION_SCHEME = "Basic";
+      
+    @Override
+    public void filter(ContainerRequestContext requestContext)
+    {
+        Method method = resourceInfo.getResourceMethod();
+        //Access allowed for all
+        if( ! method.isAnnotationPresent(PermitAll.class))
+        {
+            //Access denied for all
+            if(method.isAnnotationPresent(DenyAll.class))
+            {
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                         .entity("Access blocked for all users !!").build(););
+                return;
+            }
+              
+            //Get request headers
+            final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+              
+            //Fetch authorization header
+            final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+              
+            //If no authorization information present; block access
+            if(authorization == null || authorization.isEmpty())
+            {
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("You cannot access this resource").build());
+                return;
+            }
+              
+            //Get encoded username and password
+            final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+              
+            //Decode username and password
+            String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));;
+  
+            //Split username and password tokens
+            final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+            final String username = tokenizer.nextToken();
+            final String password = tokenizer.nextToken();
+              
+            //Verifying Username and password
+            System.out.println(username);
+            System.out.println(password);
+              
+            //Verify user access
+            if(method.isAnnotationPresent(RolesAllowed.class))
+            {
+                RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+                Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
+                  
+                //Is user valid?
+                if( ! isUserAllowed(username, password, rolesSet))
+                {
+                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("You cannot access this resource").build(););
+                    return;
+                }
+            }
+        }
+    }
+    private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet)
+    {
+        boolean isAllowed = false;
+          
+        //Step 1. Fetch password from database and match with password in argument
+        //If both match then get the defined role for user from database and continue; else return isAllowed [false]
+        //Access the database and do this part yourself
+        //String userRole = userMgr.getUserRole(username);
+         
+        if(username.equals("howtodoinjava") && password.equals("password"))
+        {
+            String userRole = "ADMIN";
+             
+            //Step 2. Verify user role
+            if(rolesSet.contains(userRole))
+            {
+                isAllowed = true;
+            }
+        }
+        return isAllowed;
+    }
+}
+
+public class CustomApplication extends ResourceConfig
+{
+    public CustomApplication()
+    {
+        packages("com.howtodoinjava.jersey");
+        register(LoggingFilter.class);
+        register(GsonMessageBodyHandler.class);
+ 
+        //Register Auth Filter here
+        register(AuthenticationFilter.class);
+    }
+}
+
+@Path("/employees")
+public class JerseyService
+{
+    @RolesAllowed("ADMIN")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Employees getAllEmployees()
+    {
+        Employees list = new Employees();
+        list.setEmployeeList(new ArrayList<Employee>());
+         
+        list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+        list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+        list.getEmployeeList().add(new Employee(3, "David Kameron"));
+         
+        return list;
+    }
+}  
+===============================Rest security===============================================
+1. Authorization
+	1.1. Basic authentication mode
+	1.2. Basic authentication – non-prempitive mode
+	1.3. Universal mode
+2.DIGEST Authentication (https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/)
+3. Input Validation
+4. Output Encoding
+5.Cryptography
+6. HTTP Status Codes
+7. OAUTH2 API Keys
+8. Client CERT Authentication
+9. JAX-RS SecurityContext instance
+10. JAR-RS annotations for method level authorization
+	@PermitAll
+	@DenyAll
+	@RolesAllowed
+		
+REST API Security Best Practices:
+	Use only HTTPS protocol so that your whole communication is always encrypted.
+	Never send auth credentials or API keys as query param. They appear in URL and can be logged or tracked easily.
+	Use hardest encryption level always. It will help in having more confidence.
+	For resources exposed by RESTful web services, it’s important to make sure any PUT, POST, and DELETE request is 	protected from Cross Site Request Forgery.
+	Always validate the input data asap it is received in server method. Use only primitive data as input parameter as 		much as possible.
+	Rely on framework provided validation features as they are tested by large community already.
+	
+	
+	
+	
+	
+Jersey REST Client Authentication Example
+1. Jersey Client – HttpAuthenticationFeature
+
+HttpAuthenticationFeature class provides HttpBasic and Digest client authentication capabilities. The feature work in one of 4 modes i.e. BASIC, BASIC NON-PREEMPTIVE, DIGEST and UNIVERSAL. Let’s quickly learn about them.
+
+BASIC – It’s preemptive authentication way i.e. information is send always with each HTTP request. This mode must be combined with usage of SSL/TLS as the password is send only BASE64 encoded.
+BASIC NON-PREEMPTIVE – It’s non-preemptive authentication way i.e. auth information is added only when server refuses the request with 401 status code and then the request is repeated with authentication information.
+DIGEST – Http digest authentication. Does not require usage of SSL/TLS.
+UNIVERSAL – Combination of basic and digest authentication in non-preemptive mode i.e. in case of 401 response, an appropriate authentication is used based on the authentication requested as defined in WWW-Authenticate HTTP header.
+To use HttpAuthenticationFeature, build an instance of it and register with client.
+
+1.1. Basic authentication mode
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("username", "password"); 
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+1.2. Basic authentication – non-prempitive mode
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                                    .nonPreemptive()
+                                    .credentials("username", "password")
+                                    .build();
+
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+1.3. Universal mode
+//HttpAuthenticationFeature feature = HttpAuthenticationFeature.universal("username", "password");
+
+//Universal builder having different credentials for different schemes
+HttpAuthenticationFeature feature = HttpAuthenticationFeature.universalBuilder()
+                .credentialsForBasic("username1", "password1")
+                .credentials("username2", "password2").build();
+final Client client = ClientBuilder.newClient();
+client.register(feature);
+
+2. How to secure REST APIs
+
+For authentication enabled rest apis, use roles related annotations, such as @RolesAllowed. For example, this is the code of secured REST API.
+
+@Path("/employees")
+public class JerseyService
+{
+    @RolesAllowed("ADMIN")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Employees getAllEmployees()
+    {
+        Employees list = new Employees();
+        list.setEmployeeList(new ArrayList<Employee>());
+         
+        list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+        list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+        list.getEmployeeList().add(new Employee(3, "David Kameron"));
+         
+        return list;
+    }
+}
+
+3. Jersey REST Client Code
+
+Below is the jersey rest client basic authentication example which accept username and password details for authentication purpose.
+
+public static void main(String[] args) throws IOException
+{
+    httpGETCollectionExample();
+}
+ 
+private static void httpGETCollectionExample()
+{
+    ClientConfig clientConfig = new ClientConfig();
+ 
+    HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("howtodoinjava", "password");
+    clientConfig.register( feature) ;
+ 
+    clientConfig.register(JacksonFeature.class);
+ 
+    Client client = ClientBuilder.newClient( clientConfig );
+    WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+     
+    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder.get();
+     
+    System.out.println(response.getStatus());
+    System.out.println(response.getStatusInfo());
+     
+    if(response.getStatus() == 200)
+    {
+        Employees employees = response.readEntity(Employees.class);
+        List<Employee> listOfEmployees = employees.getEmployeeList();
+        System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+    }
+}
+
+
+=====================================Jersey Client – Set Cookie ==============================================
+Rest API Code
+
+I have written below REST API for testing purpose.
+
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public Employees getAllEployees(@CookieParam(value="cookieParam1") String cookieParam1,
+                                @CookieParam(value="cookieParam2") String cookieParam2)
+{
+    System.out.println("cookieParam1 is :: "+ cookieParam1);
+    System.out.println("cookieParam2 is :: "+ cookieParam2);
+     
+    Employees list = new Employees();
+    list.setEmployeeList(new ArrayList<Employee>());
+     
+    list.getEmployeeList().add(new Employee(1, "Lokesh Gupta"));
+    list.getEmployeeList().add(new Employee(2, "Alex Kolenchiskey"));
+    list.getEmployeeList().add(new Employee(3, "David Kameron"));
+     
+    return list;
+}
+
+Now let’s call above REST API using Jersey client code as suggested in first heading.
+
+public static void main(String[] args)
+{
+    Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
+    WebTarget webTarget = client.target("http://localhost:8080/JerseyDemos/rest").path("employees");
+      
+    Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder
+                                .cookie("cookieParam1","cookieValue1")
+                                .cookie(new Cookie("cookieParam2", "cookieValue2"))
+                                .get();
+      
+    Employees employees = response.readEntity(Employees.class);
+    List<Employee> listOfEmployees = employees.getEmployeeList();
+          
+    System.out.println(response.getStatus());
+    System.out.println(Arrays.toString( listOfEmployees.toArray(new Employee[listOfEmployees.size()]) ));
+}
+========================================HATEOAS =========================================================
+HATEOAS stands for Hypertext As The Engine Of Application State.
+The typical response of the students resource /myApp/students/1:
+	<Student>
+	    <rollno>10</rollno>
+	    <firstName>Amit</firstName >
+	    <lastName>Agarwal</lastName>
+	    <age>25</age>
+	</Student>
+What if we give the additional information to the client, about how to check all the courses that this student (with the given roll no.) has enrolled into.
+	<Student>
+	    <rollno>10</rollno>
+	    <firstName>Amit</firstName >
+	    <lastName>Agarwal</lastName>
+	    <age>25</age>
+	    <link rel = “courses” href =”/myApp/students/1/registrations”>
+	</Student>
+Similarly for the courses URI: /myApp/courses/1234
+	<Courses>
+	    <CourseID>1234</ CourseID>
+	    <CourseName>REST</ CourseName>
+	    <CourseFess>10000</ CourseFess>
+	    <courseDuration>30</CourseDuration>
+	    <courseStartDate>25-12-2014</courseStartdate> 
+	</Courses>
+Now once, a client has the course information, he/she might want to know about the students who have enrolled for the course, we can send the link of the resource URI of the students enrolled in this course.
+	<Courses>
+	    <CourseID>1234</ CourseID>
+	    <CourseName>REST</ CourseName>
+	    <CourseFess>10000</ CourseFess>
+	    <courseDuration>30</CourseDuration>
+	    <courseStartDate>25-12-2014</courseStartdate>
+	    <link rel=”students” href=”/myApp/courses/1234/registrations”> 
+	</Courses>
+	
+	
+===============================Building a Generic Response=============================================
+So far when we send a response to the client we have always send the status code as 200 in case of successful response but a good REST API design API sends different status code in response for different situations.
+
+For example, we should send the status code of 201 in case of POST method, which broadcasts to the client that the resource has been successfully created.
+
+public Response getAllStudents(@Context HttpHeaders headers)
+{
+	List<Student> students = studentService.getAllStudents();
+	GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(students){};
+	return Response.status(Status.OK).entity(entity).build();
+ 	
+}
+The response class contains the HTTP line, HTTP headers and the HTTP message body.
+
+@POST
+@Produces(MediaType.APPLICATION_XML)
+public Response addStudent(Student student)
+{
+	
+	String response = studentService.addStudent(student);
+	return Response.status(Status.CREATED).entity(response).build();
+
+}
+So for the POST method the 201, Created status is sent. Hence, with the use of the Response class, more generic and informative response can be sent to the client.
+===============================List of Status codes==========================================================
+	
+200--OK − This informs the client about the successful response.
+201--CREATED − when a resource is successfully created using POST or PUT request. Returns link to the newly created resource using the location header.
+		This should be returned for POST requests, stating that the resource is created successfully on the server. Like, when the client sends: POST /myApp/students/ request and the student recourse is created successfully then the server should return 201 Created as status code. The server can also return 200 OK, but it's always good to be more precise, and send 201 Created in case of a POST request.
+202--Accepted - This informs the client that the request has been successfully received, but the processing is not yet finished.
+
+204--NO CONTENT − when response body is empty. For example, a DELETE request.
+		  This informs the client that the request has been successfully processed, but no content will be returned.
+304--NOT MODIFIED − used to reduce network bandwidth usage in case of conditional GET requests. Response body should be empty. Headers should have date, location, etc.
+400--BAD REQUEST − states that an invalid input is provided. For example, validation error, missing data.
+401--UNAUTHORIZED − states that user is using invalid or wrong authentication token.
+403--FORBIDDEN − states that the user is not having access to the method being used. For example, Delete access without admin rights.
+404--NOT FOUND − states that the method is not available.
+409--CONFLICT − states conflict situation while executing the method. For example, adding duplicate entry.
+500--INTERNAL SERVER ERROR − states that the server has thrown some exception while executing the method.
+503--Service Unavailable - When server is not available due to excessive load or may be down for maintainence, this status code is returned to the client.
+
+============================================Some Imporatant classes=======================================================
+org.glassfish.jersey.filter.LoggingFilter
+org.glassfish.jersey.media.multipart.MultiPartFeature
+org.glassfish.jersey.servlet.ServletContainer(jersey.config.server.provider.packages)
+FormDataContentDisposition
+ResponseBuilder
+MessageBodyWritter and MessageBodyReader. ----convert raw data type to java type and vice versa.
+ParamConverter and ParamConverterProvider ----Its convert string to custome data type and Vice Versa
+MultivaluedMap<String, String>
+
+
+
+Types Supported for HTTP Request and Response Entity Bodies
+Java Type						Supported Media Types
+byte[]							All media types (*/*)
+java.lang.String					All text media types (text/*)
+java.io.InputStream					All media types (*/*)
+java.io.Reader						All media types (*/*)
+java.io.File						All media types (*/*)
+javax.activation.DataSource				All media types (*/*)
+javax.xml.transform.Source				XML media types (text/xml, application/xml, and application/*+xml)
+javax.xml.bind.JAXBElement and application-supplied JAXB classes 	XML media types (text/xml, application/xml, and application/*+xml)
+MultivaluedMap<String, String>				Form content (application/x-www-form-urlencoded)
+StreamingOutput						All media types (*/*), MessageBodyWriter only
+
+
+
+For more information about status code,please click below link:
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#2xx_Success
+===================================Below are the References links for Rest
+Link for how to create JAX-RS API and Cliet:
+https://www.tutorialspoint.com/restful/restful_methods.htm
+
+
+
