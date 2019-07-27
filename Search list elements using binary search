@@ -1,0 +1,13 @@
+import java.util.Collections;
+import java.util.LinkedList;
+
+public class LinkedListDemo {
+public static void main(String[] args) {
+	LinkedList<String> linkedList =  new LinkedList<String>();
+	linkedList.add("abc");
+	linkedList.add("efdc");
+	linkedList.add("sdfd");
+	int i = Collections.binarySearch(linkedList, "efdc");
+	System.out.println(i);
+}
+}
