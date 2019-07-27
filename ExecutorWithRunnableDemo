@@ -1,0 +1,37 @@
+package corejava;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+/*
+TimeUnit :
+
+TimeUnit belongs to the package java.util.concurrent. TimeUnit has come in java since jdk 1.5. TimeUnit playes with unit of time. TimeUnit has many units like DAYS,MINUTES,SECONDS etc.
+TimeUnit tu=TimeUnit.DAYS; 
+TimeUnit is an enum. When we call TimeUnit.DAYS or any other unit, it returns TimeUnit. TimeUnit has convert method that can convert the given long value in required Time Unit. TimeUnit has timedJoin . normal join function in java, waits for a thread until that thread completes its job but timedJoin waits only up to a time and then control releases of calling thread.
+TimeUnit.SECONDS.timedJoin(th, 5); 
+ */
+
+
+public class ExecutorService_Runnable implements Runnable {
+
+	@Override
+	public void run() {
+	for (int i = 0; i < 10; i++) {
+		System.out.println(Thread.currentThread().getName()+"-"+i);
+		try {
+			TimeUnit.MILLISECONDS.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	}
+public static void main(String[] args) {
+	ExecutorService_Runnable  executorService_Runnable = new ExecutorService_Runnable();
+	ExecutorService executorService = Executors.newFixedThreadPool(5);
+			//Executors.newFixedThreadPool(5);
+			//Executors.newSingleThreadExecutor();
+			//Executors.newScheduledThreadPool(4);
+	executorService.execute(executorService_Runnable);
+}
+}

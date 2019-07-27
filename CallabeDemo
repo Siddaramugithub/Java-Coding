@@ -1,1 +1,74 @@
 
+package corejava;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+/*
+Callable(I):
+The Callable interface is a generic interface containing a single call() method – which returns a generic value V:
+public interface Callable<V> {
+    V call() throws Exception;
+}
+And the call() method can throw an exception.Note that a thread can’t be created with a Callable, it can only be created with a Runnable.
+The call() method is called in order to execute the asynchronous task.
+
+Executors(C):
+
+
+ExecutorService(I):A subinterface of Executor that adds methods to manage lifecycle of threads used to run the submitted tasks and methods to produce a Future to get a result from an asynchronous computation.
+
+
+
+Future():
+When the asynchronous task is created, a Java Future object is returned.This Future object functions as a handle to the result of the asynchronous task. Once the asynchronous task completes, the result can be accessed via the Future object returned when the task was started.
+public interface Future<V> {
+    boolean cancel(boolean mayInterruptIfRunning)
+    V       get();
+    V       get(long timeout, TimeUnit unit);
+    boolean isCancelled();
+    boolean isDone();
+}
+
+ThreadPoolExecutor:
+The java.util.concurrent.ThreadPoolExecutor is an implementation of the ExecutorService interface. The ThreadPoolExecutor executes the given task (Callable or Runnable) using one of its internally pooled threads.
+
+ 
+ */
+
+class Callabledemo implements Callable<String> {
+	@Override
+	public String call() throws Exception {
+
+		return "Callable is working fine";
+
+	}
+}
+
+class Runnabledemo implements Runnable {
+
+	@Override
+	public void run() {
+		System.out.println("Runnable is working fine");
+	}
+
+}
+
+public class CalllableRunnableDemo {
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		// Using callable task
+		Callabledemo calllableDemo = new Callabledemo();
+		Future<String> future = executorService.submit(calllableDemo);
+		String value = future.get();
+		System.out.println(value);
+		if (executorService.isTerminated()) {
+			executorService.shutdown();
+		}
+
+	}
+}
