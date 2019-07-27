@@ -1,0 +1,42 @@
+package corejava;
+
+public class DeadLockusingJava8 {
+	public static void main(String[] args) {
+		String resource_1 = "Printer";
+		String resource_2 = "Scanner";
+		Runnable runnable1 = () -> {
+			synchronized (resource_1) {
+				System.out.println(Thread.currentThread().getName() + ":" + "Locked" + resource_1);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				synchronized (resource_2) {
+					System.out.println(Thread.currentThread().getName() + ":" + "Locked" + resource_2);
+				}
+			}
+		};
+
+		Runnable runnable2 = () -> {
+			synchronized (resource_2) {
+				System.out.println(Thread.currentThread().getName() + ":" + "Locked" + resource_1);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				synchronized (resource_1) {
+					System.out.println(Thread.currentThread().getName() + ":" + "Locked" + resource_2);
+				}
+			}
+		};
+		Thread thread1 = new Thread(runnable1);
+		thread1.setName("Desktop");
+		Thread thread2 = new Thread(runnable2);
+		thread2.setName("Laptop");
+
+		thread1.start();
+		thread2.start();
+	}
+}
