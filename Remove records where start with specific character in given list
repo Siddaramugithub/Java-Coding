@@ -1,0 +1,25 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+public class DeleteWordsStartWithCharacter {
+	public static void main(String[] args) {
+		String str[] = { "India", "Italy", "Uk", "US" };
+		List<String> list = new ArrayList<String>(Arrays.asList(str));
+		filter(list, 'i');
+		for (String string : list) {
+			System.out.println(string);
+		}
+	}
+	private static void filter(List<String> list, char c) {
+		int i = 0;
+		while (i < list.size()) {
+			String string = list.get(i);
+			if (string.toLowerCase().charAt(0) == c) {
+				list.remove(i);
+			} else {
+				i++;
+			}
+		}
+	}
+}
+
