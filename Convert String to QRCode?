@@ -1,0 +1,10 @@
+public class QrCode {
+	public static void main(String[] args) throws IOException {
+		String string = "Name:Siddaramu Kolle";
+		ByteArrayOutputStream stream = QRCode.from(string).to(ImageType.JPG).stream();
+		File file = new File("F:\\siddu.jpg");
+		FileOutputStream stream2 = new FileOutputStream(file);
+		stream2.write(stream.toByteArray());
+		stream2.flush();
+	}
+}
