@@ -1,0 +1,30 @@
+package corejava;
+
+public class RevereseNumberinMultipleWays {
+public static void main(String[] args) {
+	revNumWhileLoop(12345);
+	int reverse = revNumRecursion(12345);
+	System.out.println(reverse);
+}
+
+private static int revNumRecursion(int num) {
+    if(num<10) {
+   	return num; 
+    }
+    else {
+   	 System.out.print(num%10);
+   	 return revNumRecursion(num/10);
+    }
+
+}
+
+private static void revNumWhileLoop(int num) {
+	int reverse = 0;
+	while (num!=0) {
+		int remainder = num%10;
+		reverse =  reverse*10+remainder;
+		num = num/10;
+	}
+	System.out.println("revNumWhileLoop---"+reverse);
+}
+}
