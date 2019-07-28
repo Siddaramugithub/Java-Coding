@@ -1,0 +1,21 @@
+public class MissingNumberInArray {
+	static int sum = 0;
+	public static void main(String[] args) {
+		int[] i = { 1, 2, 4, 5, 3, 7 };//6
+		int n = i.length + 1;//7
+		int totalSum = totalSum(n);//28
+		int sum = sumOfElements(i);//22
+		int missingNumber = totalSum - sum;//28-22=6
+		System.out.println("Your Missing Number Is  :: " + missingNumber);//6
+	}
+	private static int sumOfElements(int[] i) {
+		for (int j = 0; j < i.length; j++) {
+			sum = sum + i[j];
+		}
+		return sum;
+	}
+	private static int totalSum(int n) {
+		int totalSum = (n * (n + 1)) / 2;
+		return totalSum;
+	}
+}
