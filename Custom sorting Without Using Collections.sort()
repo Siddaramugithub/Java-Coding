@@ -1,0 +1,58 @@
+public class Employee implements Comparable<Employee> {
+	private int age;
+	private String name;
+
+	public Employee() {
+	}
+
+	public Employee(int age, String name) {
+		this.age = age;
+		this.name = name;
+	}
+
+	public static void sort(List<Employee> employees) {
+		for (int i = 0; i < employees.size(); i++) {
+			for (int j = i + 1; j < employees.size(); j++) {
+				if (employees.get(i).compareTo(employees.get(j)) > 0) {
+					Employee temp = employees.get(i);
+					employees.set(i, employees.get(j));
+					employees.set(j, temp);
+				}
+			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "\nEmployee{" + "\nAge:" + age + "\nName:" + name + "}\n";
+	}
+
+	@Override
+	public int compareTo(Employee o) {
+		if (age < o.age) {
+			return -1;
+		}
+		if (age > o.age) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+}
+
+
+public class EmployeeTest{ 
+public static void main(String[] args) {
+	Employee  employee = new Employee(11, "kolle");
+	Employee  employee1 = new Employee(6, "sari");
+	Employee  employee2 = new Employee(10, "pavan");
+	List<Employee> employees =new ArrayList<>();
+	
+	employees.add(employee);
+	employees.add(employee1);
+	employees.add(employee2);
+	Employee.sort(employees);
+	System.out.println(employees);
+}
+}
