@@ -1,0 +1,16 @@
+
+Convert a given string as "11/12/2010" to a Date object. 
+public class DateFormat
+{
+	public static void main(String[] args) throws ParseException {
+		SimpleDateFormat dateFormat=new SimpleDateFormat("DD/MM/YYYY");
+		String str="23/06/1991";
+		 Date d=dateFormat.parse(str);
+		 System.out.println(d);
+		System.out.println(dateFormat.format(d));
+		
+	}
+}
+OUTPUT:
+Sun Dec 30 00:00:00 PST 1990
+364/12/1991
