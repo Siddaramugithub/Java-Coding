@@ -1,0 +1,42 @@
+public class RemoveLeadingZeros {
+	public static void main(String[] args) {
+		String str = "0000023456";
+		int i = 0;
+		while (str.charAt(i) == '0')
+			i++;
+		StringBuffer sb = new StringBuffer(str);
+		sb.replace(0, i, "");
+		System.out.println(sb.toString()); // 23456
+	}
+}
+Or
+public class RevStrRecursion {
+	public static void main(String[] args) {
+		String str ="000001234";
+		String s = str.replace("0", "");
+		System.out.println(s);
+	}
+}
+Or
+public class RevStrRecursion {
+	public static void main(String[] args) {
+		String str = "0000012345";
+		str = str.replaceAll("[0]","");
+		System.out.println(str);
+	}
+}
+Or 
+public class RevStrRecursion {
+	public static void main(String[] args) {
+		String str = "0000012345";
+		String add = "";
+		char[] ch = str.toCharArray();
+		for (int i = 0; i < ch.length; i++) {
+			if (ch[i]!='0') {
+				add = add+ch[i];
+			}
+		}
+		System.out.println(add);
+	}
+}
+
