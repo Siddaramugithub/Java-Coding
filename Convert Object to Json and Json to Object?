@@ -1,0 +1,45 @@
+Convert Object to Json and Json to Object?
+
+public class Employee {
+private int id;
+private String name;
+public int getId() {
+	return id;
+}
+public void setId(int id) {
+	this.id = id;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+}
+
+public class ObjectToJsonAndJsonToObject {
+	public static void main(String[] args) {
+		convertObjToJson();
+		convertJsonToObj();
+	}
+
+	private static void convertJsonToObj() {
+		Employee employee=new Employee();
+		try {
+			ObjectMapper mapper=new ObjectMapper();
+			File f=new File("employee.txt");
+			Employee employee2=mapper.readValue(f,Employee.class);
+		} catch (Exception e) {
+		}	
+	}
+
+	private static void convertObjToJson() {
+		Employee employee=new Employee();
+		try {
+			ObjectMapper mapper=new ObjectMapper();
+			String json=mapper.writeValueAsString(employee);
+			System.out.println(json);
+		} catch (Exception e) {
+		}	
+	}
+}
