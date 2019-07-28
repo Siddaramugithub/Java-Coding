@@ -1,0 +1,44 @@
+public class EncodeToDecode {
+	public static void main(String[] args) throws IOException {
+		String passwod = "kolle@1991";
+		endeBase64(passwod);
+
+		String url = "http://www.googel.com/";
+		encodeBase64Url(url);
+
+		File file = new File("C:\\Users\\Saritharam pavan\\Desktop\\SARI.txt");
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String st;
+		while ((st = br.readLine()) != null) {
+			encodeBase64Mime(st);
+		}
+	}
+
+	private static void encodeBase64Url(String url) {
+		Base64.Encoder encodeMime = Base64.getUrlEncoder();
+		Base64.Decoder decodeMime = Base64.getUrlDecoder();
+		String en = encodeMime.encodeToString(url.getBytes());
+		System.out.println("EncodeUrl pasword-->" + en);
+		String de = new String(decodeMime.decode(en));
+		System.out.println("DecodeUrl pasword<--" + de);
+
+	}
+
+	private static void encodeBase64Mime(String password) {
+		Base64.Encoder encodeMime = Base64.getMimeEncoder();
+		Base64.Decoder decodeMime = Base64.getMimeDecoder();
+		String en = encodeMime.encodeToString(password.getBytes());
+		System.out.println("EncodeMime pasword-->" + en);
+		String de = new String(decodeMime.decode(en));
+		System.out.println("DecodeMime pasword<--" + de);
+	}
+
+	private static void endeBase64(String passwod) {
+		Base64.Encoder encode = Base64.getEncoder();
+		Base64.Decoder decode = Base64.getDecoder();
+		String en = encode.encodeToString(passwod.getBytes());
+		System.out.println("Encode pasword-->" + en);
+		String de = new String(decode.decode(en));
+		System.out.println("Decode pasword<--" + de);
+	}
+}
