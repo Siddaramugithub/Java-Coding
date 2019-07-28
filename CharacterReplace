@@ -1,0 +1,17 @@
+public class CharacterReplace {
+	public static void main(String[] args) {
+		String str = "Java";
+		char from = 'J';
+		char to = 'k';
+		char ch[] = str.toCharArray();
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < ch.length; i++) {
+			if (ch[i] == from) {
+				builder.append(to);
+			} else {
+				builder.append(str.charAt(i));
+			}
+		}
+		System.out.println("::::" + builder.toString());
+	}
+}
