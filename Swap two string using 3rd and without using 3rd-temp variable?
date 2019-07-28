@@ -1,0 +1,27 @@
+public class SwapTwoString {
+	public static void main(String[] args) {
+		// without using 3rd variable
+		String str1 = "Hello";
+		String str2 = "world";
+
+		str1 = str1 + str2;
+		str2 = str1.substring(0, str2.length());
+		str1 = str1.substring(str2.length());
+
+		System.out.println(str1);
+		System.out.println(str2);
+
+		// With using 3rd variable
+
+		String str3 = "amma";
+		String str4 = "nanna";
+
+		String temp = str3;
+		str3 = str4;
+		str4 = temp;
+		System.out.println(str3);
+		System.out.println(str4);
+
+	}
+}
+
