@@ -1,0 +1,22 @@
+package corejava;
+
+public class CheckvaluePresentOrNotGivenArray {
+	public static void main(String[] args) {
+		int arr[] = { 1, 2, 4, 7, 5, 9, 0, 3 };
+		Boolean flag = valueProsentOrNot(arr, 8);
+		if (flag) {
+			System.out.println("Value Is present in Array");
+		} else {
+			System.out.println("Value Is not present in Array");
+		}
+	}
+
+	private static Boolean valueProsentOrNot(int[] arr, int value) {
+		for (int j = 0; j < arr.length; j++) {
+			if (arr[j] == value) {
+				return true;
+			}
+		}
+		return false;
+	}
+}

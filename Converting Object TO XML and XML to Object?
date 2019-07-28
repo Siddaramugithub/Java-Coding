@@ -1,0 +1,44 @@
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Student {
+	@XmlElement(name="Student_id")
+	private int id;
+	@XmlElement(name="Student_name")
+	private String name;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+public class convertObjectToXML {
+	public static void main(String[] args) throws JAXBException {
+		convertObjectToXML();
+		convertXmlToObject();
+	}
+	private static void convertXmlToObject() throws JAXBException {
+     File file = new File("student.xml");
+     JAXBContext context= JAXBContext.newInstance(Student.class);
+     Unmarshaller unmarshaller = context.createUnmarshaller();
+     Student student = (Student) unmarshaller.unmarshal(file);
+     System.out.println(student.getId());
+     System.out.println(student.getName());
+	}
+	private static void convertObjectToXML() throws JAXBException {
+		Student student = new Student();
+		student.setId(11);
+		student.setName("Kolle");
+		JAXBContext context = JAXBContext.newInstance(Student.class);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT, true);
+		marshaller.marshal(student, new File("student.xml"));
+		marshaller.marshal(student, System.out);
+	}
+}

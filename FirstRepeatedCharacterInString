@@ -1,0 +1,26 @@
+package corejava;
+
+public class FirstRepeatedCharacterInString {
+public static void main(String[] args) {
+	String str = "saritha";
+	int index = repeatedChar(str);
+	if (index!=-1) {
+		System.out.println(str.charAt(index)+"="+index);
+	}
+	else {
+		System.out.println("No Repeated Character found");
+	}
+}
+
+private static int repeatedChar(String str) {
+	for (int i = 0; i < str.length(); i++) {
+		for (int j = i+1; j < str.length(); j++) {
+			if (str.charAt(i)==str.charAt(j)) {
+		    return j;
+		    		
+			}
+		}
+	}
+	return -1;
+}
+}

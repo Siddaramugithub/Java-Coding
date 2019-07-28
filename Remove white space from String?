@@ -1,0 +1,17 @@
+public class DeleteWhiteSpace {
+	public static void main(String[] args) {
+		String str = "java concept of the day";
+		removeWhiteSpace(str);
+	}
+
+	private static void removeWhiteSpace(String str) {
+		char[] ch = str.toCharArray();
+		String add = "";
+		for (int i = 0; i < ch.length; i++) {
+			if (ch[i] != ' ' && ch[i] != '\t') {
+				add = add + str.charAt(i);
+			}
+		}
+		System.out.println(add);
+	}
+}

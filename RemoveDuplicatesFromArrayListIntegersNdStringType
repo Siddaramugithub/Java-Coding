@@ -1,0 +1,75 @@
+package corejava;
+
+import java.util.ArrayList;
+
+public class RemoveDuplicatesFromArrayList {
+	public static void main(String[] args) {
+		ArrayList<Integer> arrayList = new ArrayList<Integer>();
+		arrayList.add(3);
+		arrayList.add(4);
+		arrayList.add(4);
+		arrayList.add(5);
+		arrayList.add(3);
+
+		arrayList = removeDuplicatesInt(arrayList);
+		System.out.println("Removing duplicate from int ArrayList" + arrayList);
+
+		ArrayList<String> arrayListStr = new ArrayList<String>();
+		arrayListStr.add("Siddu");
+		arrayListStr.add("Sari");
+		arrayListStr.add("Pavan");
+		arrayListStr.add("Pavan");
+		arrayListStr.add("Siddu");
+
+		arrayListStr = removeDuplicatesFromStr(arrayListStr);
+		System.out.println("Removing duplicate from String ArrayList" + arrayListStr);
+		arrayListStr = removeDuplicatesFromString2Way(arrayListStr);
+		System.out.println("removeDuplicatesFromString2Way::" + arrayListStr);
+		arrayListStr = removeDuplicatesFromString3Way(arrayListStr);
+		System.out.println("removeDuplicatesFromString3Way::" + arrayListStr);
+
+	}
+
+	private static ArrayList<String> removeDuplicatesFromString3Way(ArrayList<String> arrayListStr) {
+		ArrayList<String> arrayListStr3 = new ArrayList<String>();
+		for (String string : arrayListStr) {
+			if (!arrayListStr3.contains(string)) {
+				arrayListStr3.add(string);
+			}
+
+		}
+		return arrayListStr3;
+	}
+
+	private static ArrayList<String> removeDuplicatesFromString2Way(ArrayList<String> arrayListStr) {
+		Object[] objects = arrayListStr.toArray();
+		for (Object object : objects) {
+			if (arrayListStr.indexOf(object) != arrayListStr.lastIndexOf(object)) {
+				arrayListStr.remove(arrayListStr.lastIndexOf(object));
+			}
+		}
+		return arrayListStr;
+	}
+
+	private static ArrayList<String> removeDuplicatesFromStr(ArrayList<String> arrayListStr) {
+		for (int i = 0; i < arrayListStr.size(); i++) {
+			for (int j = i + 1; j < arrayListStr.size(); j++) {
+				if (arrayListStr.get(i) == arrayListStr.get(j)) {
+					arrayListStr.remove(j);
+				}
+			}
+		}
+		return arrayListStr;
+	}
+
+	private static ArrayList<Integer> removeDuplicatesInt(ArrayList<Integer> arrayList) {
+		for (int i = 0; i < arrayList.size(); i++) {
+			for (int j = i + 1; j < arrayList.size(); j++) {
+				if (arrayList.get(i) == arrayList.get(j)) {
+					arrayList.remove(j);
+				}
+			}
+		}
+		return arrayList;
+	}
+}

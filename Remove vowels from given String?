@@ -1,0 +1,39 @@
+Remove vowels from given String? 
+public class DeleteVowels {
+public static void main(String[] args) {
+	String str = "java concept of the day";
+	deleteVowels(str);
+}
+
+private static void deleteVowels(String str) {
+String remove = str.replaceAll("[aeiouAEIOU]", "");
+	System.out.println(remove);
+}
+--without using replace method
+public class DeleteVowel1 {
+	public static void main(String[] args) {
+		String str = "java concept of the day";
+		removeVowelsstr(str);
+	}
+
+	private static void removeVowelsstr(String str) {
+		String add = "";
+		for (int i = 0; i < str.length(); i++) {
+			if (!isVowel(str.charAt(i))) {
+				add = add + str.charAt(i);
+			}
+		}
+		System.out.println(add);
+	}
+
+	private static boolean isVowel(char c) {
+		String str = "aeiou";
+		for (int i = 0; i < str.length(); i++) {
+			if (c == str.charAt(i)) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+

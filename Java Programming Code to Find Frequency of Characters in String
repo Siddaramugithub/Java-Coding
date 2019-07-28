@@ -1,0 +1,27 @@
+public class Test {
+	public static void main(String args[]) {
+		String str;
+		char c, ch;
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Enter a String : ");
+		str = scan.nextLine();
+		for (c = 'a'; c <= 'z'; c++) {
+			int k = 0;
+			for (int j = 0; j < str.length(); j++) {
+				ch = str.charAt(j);
+				if (ch == c) {
+					k++;
+				}
+			}	
+			if (k > 0) {
+			System.out.println("The character " + c + " has occurred for " + k + " times");
+			}
+		}
+	}
+}
+OUTPUT:
+Enter a String : siddu
+The character d has occurred for 2 times
+The character i has occurred for 1 times
+The character s has occurred for 1 times
+The character u has occurred for 1 times

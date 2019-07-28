@@ -1,0 +1,31 @@
+package corejava;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+
+public class CustomComapareByKeyAndcvValueUsingjava8 {
+	public static void main(String[] args) {
+		Employee employee1 = new Employee(2, "kolle", 'M', new Date(), 1000f);
+		Employee employee2 = new Employee(3, "sari", 'F', new Date(), 3000f);
+		Employee employee3 = new Employee(4, "pavan", 'M', new Date(), 4000f);
+		Employee employee4 = new Employee(1, "siddu", 'M', new Date(), 2000f);
+		HashMap<String, Employee> hashMap = new HashMap<String, Employee>();
+		hashMap.put("employee1", employee1);
+		hashMap.put("employee2", employee2);
+		hashMap.put("employee3", employee3);
+		hashMap.put("employee4", employee4);
+		//sort id
+		hashMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.comparing(Employee::getId)))
+				.forEach(System.out::println);
+		//sort Name
+		hashMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.comparing(Employee::getName)))
+				.forEach(System.out::println);
+		//sort by salary
+		hashMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.comparing(Employee::getSalary)))
+				.forEach(System.out::println);
+		//sort age
+		hashMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.comparing(Employee::getGender)))
+				.forEach(System.out::println);
+	}
+}

@@ -1,0 +1,23 @@
+public static void main(String[] args) {
+	String str = "java concept of the day";
+	int count = 0;
+	String[] words = str.split(" ");
+	for (String string : words) {
+		count++;
+	}
+	System.out.println(str+"="+count);
+ }
+}
+Or 
+public class CountNoOfWords {
+public static void main(String[] args) {
+	String str = "java concept of the day nd fdf dfd";
+	int count = 1;
+	for (int i = 0; i < str.length(); i++) {
+		if(str.charAt(i)==' ') {
+			count++;
+		}
+	}
+	System.out.println(count);
+ }
+}

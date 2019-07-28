@@ -1,0 +1,18 @@
+class MethodTest
+{
+	private void show()
+	{
+		System.out.println("private method access outside the class");
+	}
+	}
+public class Privatemethod {
+public static void main(String[] args) throws Exception{
+	Class c=Class.forName("MethodTest");
+	MethodTest mm=(MethodTest)c.newInstance();
+	Method method=c.getDeclaredMethod("show", null);
+	method.setAccessible(true);
+	method.invoke(mm, null);
+}
+}
+OUTPUT:
+private method access outside the class

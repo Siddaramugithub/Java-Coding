@@ -1,0 +1,89 @@
+package corejava;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ReverseStringMultipleWays {
+	public static void main(String[] args) {
+		String str = "kolle";
+
+		reverseStringUsingForLoop(str);
+		reverseStringConvertingCharArrayUsingForLoop(str);
+		String reverseStr = reverseStringUsingRecursion(str);
+		System.out.println("reverseStringUsingRecursion---" + reverseStr);
+		revStrWithoutApiUsingByteType(str);
+		reverseStringUsingSwap(str);
+		reverseStringUsingCollection(str);
+
+	}
+
+	private static void reverseStringUsingCollection(String str) {
+		char[] hello = str.toCharArray(); 
+        List<Character> trial1 = new ArrayList<>(); 
+        for (char c: hello) 
+            trial1.add(c); 
+        Collections.reverse(trial1); 
+        ListIterator li = trial1.listIterator(); 
+        System.out.print("reverseStringUsingCollection---");
+        while (li.hasNext()) 
+            System.out.print(li.next()); 
+
+		
+	}
+
+	private static void reverseStringUsingSwap(String str) {
+		char[] temparray = str.toCharArray();
+		int left, right = 0;
+		right = temparray.length - 1;
+
+		for (left = 0; left < right; left++, right--) {
+			char temp = temparray[left];
+			temparray[left] = temparray[right];
+			temparray[right] = temp;
+		}
+		System.out.print("reverseStringUsingSwap---");
+		for (char c : temparray)
+			System.out.print(c);
+		System.out.println();
+
+	}
+
+	private static void revStrWithoutApiUsingByteType(String str) {
+		byte[] byteStr = str.getBytes();
+		byte[] result = new byte[byteStr.length];
+		for (int i = 0; i < byteStr.length; i++)
+			result[i] = byteStr[byteStr.length - i - 1];
+		System.out.println("revStrWithoutApiUsingByteType---" + new String(result));
+
+	}
+
+	private static String reverseStringUsingRecursion(String str) {
+		String reverse = "";
+		if (str.length() == 0) {
+			return str;
+		} else {
+			return reverse = reverse + str.charAt(str.length() - 1)
+					+ reverseStringUsingRecursion(str.substring(0, str.length() - 1));
+
+		}
+	}
+
+	private static void reverseStringConvertingCharArrayUsingForLoop(String str) {
+		String add1 = "";
+		char[] ch = str.toCharArray();
+		for (int i = ch.length - 1; i >= 0; i--) {
+			add1 = add1 + ch[i];
+		}
+		System.out.println("reverseStringConvertingCharArrayUsingForLoop---" + add1);
+	}
+
+	private static void reverseStringUsingForLoop(String str) {
+		String add = "";
+		for (int i = str.length() - 1; i >= 0; i--) {
+			add = add + str.charAt(i);
+		}
+		System.out.println("reverseStringUsingForLoop---" + add);
+	}
+}

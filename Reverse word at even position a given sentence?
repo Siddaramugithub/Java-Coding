@@ -1,0 +1,26 @@
+public class RevWordAtOddPos {
+public static void main(String[] args) {
+	String msg = "java concepr of the day";
+	String[] strWords = msg.split(" ");
+	StringBuffer buffer = new StringBuffer();
+	for (int i = 0; i <strWords.length; i++) {
+		if (i%2 == 0 ) {
+			buffer.append(strWords[i]);
+		}
+		else {
+			buffer.append(revesreWord(strWords[i]));
+		}
+		buffer.append(" ");
+	}
+	System.out.println(buffer.toString());
+}
+private static Object revesreWord(String words) {
+	char[] ch = words.toCharArray();
+	char[] reverseChar = new char[ch.length];
+	int length = ch.length-1;
+	for (int i = length; i >=0; i--) {
+		reverseChar[length-i] = ch[i];
+	}
+	return new String(reverseChar);
+}
+}

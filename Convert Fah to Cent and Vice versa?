@@ -1,0 +1,18 @@
+Convert Fah to Cent and Vice versa?
+public class FahToCenAndCentToFah {
+	public static void main(String[] args) {
+		int cent = 45;
+		convertCentToFah(cent);
+		int fah = 113;
+		convertFahToCent(fah);
+	}
+
+	private static void convertFahToCent(int fah) {
+		int cent = (int) ((fah - 32) / 1.8);
+		System.out.println("FahToCent::"+cent);
+	}
+	private static void convertCentToFah(int cent) {
+		int fah = (int) ((1.8 * cent) + 32);
+		System.out.println("CentToFah::"+fah);
+	}
+}

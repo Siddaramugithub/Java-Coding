@@ -1,0 +1,28 @@
+public classSwappinTwoNumbers {
+	public static void main(String[] args) {
+		Scanner scanner=new Scanner(System.in);
+		System.out.println("enter first number:");
+		int a=scanner.nextInt();
+		System.out.println("enter second number:");
+		int b=scanner.nextInt();
+		
+		System.out.println("before swapping:");
+		System.out.println("A="+a);
+		System.out.println("B="+b);
+		
+		/*int temp=a;// way 1 Using 3rd value
+		         a=b;
+		         b=temp;
+		*/
+
+		/*a=a+b; //2 way swapping witout using 3 rd value
+		  b=a-b;
+		  a=a-b;*/
+
+		  b=a+b-(a=b);//way 3 in single line of code withot using 3rd value
+
+		System.out.println("After swapping:");
+		System.out.println("A="+a);
+		System.out.println("B="+b);
+	}
+	}
