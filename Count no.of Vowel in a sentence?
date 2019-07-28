@@ -1,0 +1,25 @@
+public class CountNoOfVowels {
+public static void main(String[] args) {
+	String str = "java concept of the day";
+	countVowelsInStr(str);
+}
+
+private static void countVowelsInStr(String str) {
+	char[] ch = str.toCharArray();
+	int count = 0;
+	for (char c : ch) {
+		switch (c) {
+		case 'a':
+		case 'e':
+		case 'i':
+		case 'o':
+		case 'u':
+			count++;
+			break;
+		default:
+		}
+		
+	}
+	System.out.println("Vowels="+count);	
+}
+}	
