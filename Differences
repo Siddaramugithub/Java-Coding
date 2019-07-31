@@ -1,1 +1,570 @@
 
+ArrayList and LinkedList
+ArrayList and LinkedList both implements List interface and maintains insertion order. Both are non synchronized classes.
+However, there are many differences between ArrayList and LinkedList classes that are given below
+ArrayList
+ArrayList internally uses a dynamic array to store the elements.	Manipulation with ArrayList is slow because it internally uses an array. If any element is removed from the array, all the bits are shifted in memory.	
+An ArrayList class can act as a list only because it implements List only.	
+ArrayList is better for storing and accessing data.	
+
+LinkedList
+LinkedList internally uses a doubly linked list to store the elements.
+Manipulation with LinkedList is faster than ArrayList because it uses a doubly linked list, so no bit shifting is required in memory.
+LinkedList class can act as a list and queue both because it implements List and Deque interfaces.
+LinkedList is better for manipulating data.
+LinkedList
+Java LinkedList class is a member of the Java Collections Framework.
+It is an implementation of the List and Deque interfaces.
+Internally, it is an implemented using Doubly Linked List Data Structure.
+It supports duplicate elements.
+It stores or maintains it’s elements in Insertion order.
+We can add any number of null elements.
+It is not synchronised that means it is not Thread safe.
+We can create a synchronised LinkedList using Collections.synchronizedList() method.
+In Java applications, we can use it as a List, stack or queue.
+It does not implement RandomAccess interface. So we can access elements in sequential order only. It does not support accessing elements randomly.
+When we try to access an element from a LinkedList, searching that element starts from the beginning or end of the LinkedList based on where that elements is available.
+We can use ListIterator to iterate LinkedList elements.
+From Java SE 8 on-wards, we can convert a LinkedList into a Stream and vice-versa.
+Java SE 9 is going to add couple of factory methods to create an Immutable LinkedList.
+
+Difference between ArrayList and Vector
+ArrayList and Vector both implements List interface and maintains insertion order.
+However, there are many differences between ArrayList and Vector classes that are given below.
+ArrayList
+ArrayList is not synchronized.
+2) ArrayList increments 50% of current array size if the number of elements exceeds from its capacity.
+3) ArrayList is not a legacy class. It is introduced in JDK 1.2.
+4) ArrayList is fast because it is non-synchronized.
+5) ArrayList uses the Iterator interface to traverse the elements.
+Vector
+Vector is synchronized.
+
+Vector increments 100% means doubles the array size if the total number of elements exceeds than its capacity.
+Vector is a legacy class.
+Vector is slow because it is synchronized, i.e., in a multithreading environment, it holds the other threads in runnable or non-runnable state until current thread releases the lock of the object.
+A Vector can use the Iterator interface or Enumeration interface to traverse the elements.
+
+Difference between HashMap and Hashtable
+
+HashMap and Hashtable both are used to store data in key and value form. Both are using hashing technique to store unique keys.
+But there are many differences between HashMap and Hashtable classes that are given below.
+HashMap
+HashMap is non synchronized. It is not-thread safe and can't be shared between many threads without proper synchronization code.
+HashMap allows one null key and multiple null values.
+We can make the HashMap as synchronized by calling this code
+Map m = Collections.synchronizedMap(hashMap);
+HashMap is traversed by Iterator.
+Iterator in HashMap is fail-fast.
+HashMap inherits AbstractMap class.
+Hashtable
+Hashtable is synchronized. It is thread-safe and can be shared with many threads.
+Hashtable doesn't allow any null key or value.
+Hashtable is a legacy class.
+Hashtable is slow.
+Hashtable is internally synchronized and can't be unsynchronized.
+Hashtable is traversed by Enumerator and Iterator.
+Enumerator in Hashtable is not fail-fast.
+Hashtable inherits Dictionary class.
+
+
+Difference between Comparable and Comparator
+Comparable and Comparator both are interfaces and can be used to sort collection elements.
+However, there are many differences between Comparable and Comparator interfaces that are given below.
+Comparable	
+ Comparable provides a single sorting sequence. In other words, we can sort the collection on the basis of a single element such as id, name, and price.
+Comparable affects the original class, i.e., the actual class is modified.
+Comparable is present in java.lang package.
+We can sort the list elements of Comparable type by Collections.sort(List) method.
+Comparable provides compareTo() method to sort elements.
+Comparator	
+The Comparator provides multiple sorting sequences. In other words, we can sort the collection on the basis of multiple elements such as id, name, and price etc.
+Comparator doesn't affect the original class, i.e., the actual class is not modified.
+Comparator provides compare() method to sort elements.
+A Comparator is present in the java.util package.
+We can sort the list elements of Comparator type by Collections.sort(List, Comparator) method.
+
+Difference between JDK, JRE, and JVM
+JVM
+
+JVM (Java Virtual Machine) is an abstract machine. It is called a virtual machine because it doesn't physically exist. It is a specification that provides a runtime environment in which Java bytecode can be executed. It can also run those programs which are written in other languages and compiled to Java bytecode.
+
+JVMs are available for many hardware and software platforms. JVM, JRE, and JDK are platform dependent because the configuration of each OS is different from each other. However, Java is platform independent. There are three notions of the JVM: specification, implementation, and instance.
+The JVM performs the following main tasks:
+Loads code
+Verifies code
+Executes code
+Provides runtime environment
+
+JRE
+JRE is an acronym for Java Runtime Environment. It is also written as Java RTE. The Java Runtime Environment is a set of software tools which are used for developing Java applications. It is used to provide the runtime environment. It is the implementation of JVM. It physically exists. It contains a set of libraries + other files that JVM uses at runtime.
+
+JDK
+JDK is an acronym for Java Development Kit. The Java Development Kit (JDK) is a software development environment which is used to develop Java applications and applets. It physically exists. It contains JRE + development tools.
+JDK is an implementation of any one of the below given Java Platforms released by Oracle Corporation:
+	Standard Edition Java Platform
+	Enterprise Edition Java Platform
+	Micro Edition Java Platform
+The JDK contains a private Java Virtual Machine (JVM) and a few other resources such as an interpreter/loader (java), a compiler (javac), an archiver (jar), a documentation generator (Javadoc), etc. to complete the development of a Java Application.
+
+Difference between method overloading and method overriding in java
+There are many differences between method overloading and method overriding in java. A list of differences between method overloading and method overriding are given below:
+Method Overloading
+Method overloading is used to increase the readability of the program.	
+Method overloading is performed within class.
+In case of method overloading, parameter must be different.
+Method overloading is the example of compile time polymorphism.
+In java, method overloading can't be performed by changing return type of the method only. Return type can be same or different in method overloading. But you must have to change the parameter.
+Method Overriding
+Method overriding is used to provide the specific implementation of the method that is already provided by its super class.
+Method overriding occurs in two classes that have IS-A (inheritance) relationship.
+In case of method overriding, parameter must be same.
+Method overriding is the example of run time polymorphism.
+Return type must be same or covariant in method overriding.
+
+Difference between object and class
+There are many differences between object and class. A list of differences between object and class are given below:
+Object
+Object is an instance of a class.
+Object is a real world entity such as pen, laptop, mobile, bed, keyboard, mouse, chair etc.	
+Object is a physical entity.
+Object is created through new keyword mainly e.g.
+Student s1=new Student();
+Object is created many times as per requirement.
+Object allocates memory when it is created.
+There are many ways to create object in java such as new keyword, newInstance() method, clone() method, factory method and deserialisation.
+Class
+Class is a blueprint or template from which objects are created.
+Class is a group of similar objects.
+Class is a logical entity.
+Class is declared using class keyword e.g.class Student{}
+Class is declared once.
+Class doesn't allocated memory when it is created.
+There is only one way to define class in java using class keyword.
+
+SOAP vs REST Web Services
+There are many differences between SOAP and REST web services. The important 10 differences between SOAP and REST are given below:
+SOAP	
+SOAP is a protocol.	
+SOAP stands for Simple Object Access Protocol.	
+SOAP can't use REST because it is a protocol.	
+SOAP uses services interfaces to expose the business logic.	
+JAX-WS is the java API for SOAP web services.	
+SOAP defines standards to be strictly followed.	
+SOAP requires more bandwidth and resource than REST.	
+SOAP defines its own security.	
+SOAP permits XML data format only.	
+SOAP is less preferred than REST.	
+REST
+REST is an architectural style.
+REST stands for REpresentational State Transfer.
+REST can use SOAP web services because it is a concept and can use any protocol like HTTP, SOAP.
+REST uses URI to expose business logic.
+JAX-RS is the java API for RESTful web services.
+REST does not define too much standards like SOAP.
+REST requires less bandwidth and resource than SOAP.
+RESTful web services inherits security measures from the underlying transport.
+REST permits different data format such as Plain text, HTML, XML, JSON etc.
+REST more preferred than SOAP.
+
+
+
+
+
+
+
+
+
+
+
+
+Difference between String and StringBuffer
+
+
+
+
+
+Difference between StringBuffer and StringBuilder
+
+Java provides three classes to represent a sequence of characters: String, StringBuffer, and StringBuilder. The String class is an immutable class whereas StringBuffer and StringBuilder classes are mutable. There are many differences between StringBuffer and StringBuilder. The StringBuilder class is introduced since JDK 1.5.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Synchronous vs Asynchronous
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Difference between throw and throws in Java
+There are many differences between throw and throws keywords. A list of differences between throw and throws are given below:
+throw	
+Java throw keyword is used to explicitly throw an exception.	
+Checked exception cannot be propagated using throw only.	
+Throw is followed by an instance.	
+Throw is used within the method.	
+You cannot throw multiple exceptions.	
+throw keyword is used inside a function. It is used when it is required to throw an Exception logically.
+Checked exception cannot be propagated using throw only.Unchecked exception can be propagated using throw.
+throws
+Java throws keyword is used to declare an exception.
+Checked exception can be propagated with throws.
+Throws is followed by class.
+Throws is used with the method signature.
+You can declare multiple exceptions e.g.public void method()throws IOException,SQLException.
+For the propagation checked exception must use throws keyword followed by specific exception class name.
+
+
+Difference between final, finally and finalize
+There are many differences between final, finally and finalize. A list of differences between final, finally and finalize are given below:
+final
+Final is used to apply restrictions on class, method and variable. Final class can't be inherited, final method can't be overridden and final variable value can't be changed.
+Final is a keyword.
+finally	
+Finally is used to place important code, it will be executed whether exception is handled or not.
+Finally is a block.
+finalize
+Finalize is used to perform clean up processing just before object is garbage collected.
+Finalize is a method.
+
+Difference between == and .equals() method in Java
+In general both equals() and “==” operator in Java are used to compare objects to check equality but here are some of the differences between the two:
+Main difference between .equals() method and == operator is that one is method and other is operator.
+We can use == operators for reference comparison (address comparison) and .equals() method for content comparison. In simple words, == checks if both objects point to the same memory location whereas .equals() evaluates to the comparison of values in the objects.
+If a class does not override the equals method, then by default it uses equals(Object o) method of the closest parent class that has overridden this method. 
+
+Difference between Thread.start() and Thread.run() in Java
+New Thread creation: When a program calls the start() method, a new thread is created and then the run() method is executed. But if we directly call the run() method then no new thread will be created and run() method will be executed as a normal method call on the current calling thread itself and no multi-threading will take place.
+
+Multiple invocation: In Java’s multi-threading concept, another most important difference between start() and run() method is that we can’t call the start() method twice otherwise it will throw an IllegalStateException whereas run() method can be called multiple times as it is just a normal method calling.
+START()
+Creates a new thread and the run() method is executed on the newly created thread.
+Can’t be invoked more than one time otherwise throws java.lang.IllegalStateException
+Defined in java.lang.Thread class.	
+RUN()
+No new thread is created and the run() method is executed on the calling thread itself.
+Multiple invocation is possible
+Defined in java.lang.Runnable interface and must be overridden in the implementing class.
+
+Difference between Iterator and ListIterator and Enumeration
+
+
+Enumeration v/s Iterator v/s ListIterator:
+All 3 cursors are used to iterate over collection items
+but there are certain differences between each one of them
+
+
+
+
+
+Difference between ArrayList and HashSet in Java
+Here are couple of differences between ArrayList and HashSet.
+Inheritance:
+
+Implementation:
+Implementation : ArrayList implements List interface while HashSet implements Set interface in Java.
+Internal implementation:
+ArrayList is backed by an Array while HashSet is backed by an HashMap.
+Duplicates :
+ArrayList allows duplicate values while HashSet doesn’t allow duplicates values.
+Constructor :
+ArrayList have three constructor which are ArrayList(), ArrayList(int capacity) ArrayList(int Collection c) while HashSet have four constructor which are HashSet(), HashSet(int capacity), HashSet(Collection c) and HashSet(int capacity, float loadFactor)
+Ordering :
+ArrayList maintains the order of the object in which they are inserted while HashSet is an unordered collection and doesn’t maintain any order.
+Indexing :
+ArrayList is index based we can retrieve object by calling get(index) method or remove objects by calling remove(index) method while HashSet is completely object based. HashSet also does not provide get() method.
+Null Object:
+ArrayList not apply any restriction, we can add any number of null value while HashSet allow one null value.
+Syntax:
+ArrayList:- ArrayList list=new ArrayList(); HashSet:- HashSet set=new HashSet();
+
+
+differences between Arrays and Collection:
+
+
+
+
+
+Difference Between LinkedList and LinkedHashSet in Java
+
+LinkedList class implements the List and Deque interface and extends from AbstractSequentialList class. LinkedList class uses doubly linked list to store the elements. It provides a linked-list data structure.
+Java LinkedHashSet class is a Hash table and Linked list implementation of the set interface. It inherits HashSet class and implements Set interface. LinkedHashSet implementations of Set interface, there are some differences exist between them.
+Lets See Difference Between LinkedList and LinkedHashSet in Java
+Inheritance:
+
+
+How work internally
+Java LinkedList class uses doubly linked list to store the elements while LinkedHashSet uses LinkedHashMap internally to store it’s elements.
+uniqueness:
+LinkedList class can contain duplicate elements while LinkedHashSet contains unique elements only like HashSet.
+Insertion:
+LinkedList in case of doubly linked list, we can add or remove elements from both side while LinkedHashSet insert at the end.
+Constructor:
+LinkedList have two constructor LinkedList() and LinkedList(Collection o) while LinkedHashSet have four constructor HashSet(), HashSet(Collection c), LinkedHashSet(int capacity) and LinkedHashSet(int capacity, float fillRatio)
+Insertion, Removal And Retrieval Operations:
+LinkedList Insertion, Removal And Retrieval Operations performance of order O(n) while LinkedHashSet also gives performance of order O(1) for insertion, removal and retrieval operations.
+compare the elements:
+LinkedList use equals() method LinkedHashSet also uses equals() and hashCode() methods to compare the elements.
+Null Elements:
+LinkedList allow any number of null values while LinkedHashSet also allows maximum one null element.
+Syntax:
+LinkedList syntax is: public class LinkedList extends AbstractSequentialList implements List, Deque, Cloneable, Serializable LinkedHashSet syntax is: public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializable
+
+
+Difference between an Integer and int in Java with Examples
+In Java, int is a primitive data type while Integer is a Wrapper class.
+int, being a primitive data type has got less flexibility. We can only store the binary value of an integer in it.
+Since Integer is a wrapper class for int data type, it gives us more flexibility in storing, converting and manipulating an int data.
+Integer is a class and thus it can call various in-built methods defined in the class. Variables of type Integer store references to Integer objects, just as with any other reference (object) type.
+
+Casting to String Variable : We can’t assign a String value (containing an integer only) to an int variable directly or even by casting. However, we can assign a String to an object of Integer type using the Integer(String) constructor. We can even use parseInt(String) to convert a String literal to an int value.
+
+Direct Conversion of value to other base : We can directly convert an integer value stored in Integer class to Binary, Octal or Hexadecimal format using toBinaryString(), toOctalString() or toHexString() respectively. This is not possible in a variable of int type.
+Performing operations on data : Integer class also allows us to reverse our number or rotate it left or right using reverse(), rotateLeft() and rotateRight() respectively. We need to define our own logic to perform these operations on an int variable as its not an inbuilt class.
+
+Flexibility : Integer wrapper class provides us more flexibility to the existing int datatype. We are able to perform many operations on an int value besides the predefined operators. Integer class is used where we need to treat an int variable like an object. Since Wrapper classes inherit Object class, they can be used in collections with Object reference or generics. Thus we are adding the property of nullability to the existing int data type.
+Since Java 5, we have the concept of auto-boxing wherein a primitive data type is converted into a wrapper class and vice versa automatically. Hence, we can perform any arithmetic or logical operation between any primitive data type and any Wrapper class.
+
+Equivalent wrapper classes of primitive types in Java
+
+
+Difference between static and non-static variables in Java
+Static Variables: When a variable is declared as static, then a single copy of the variable is created and shared among all objects at a class level. Static variables are, essentially, global variables. All instances of the class share the same static variable.
+Important points for static variables :-
+We can create static variables at class-level only. See here
+static block and static variables are executed in order they are present in a program.
+
+Non-Static Variable
+Local Variables: A variable defined within a block or method or constructor is called local variable.
+These variable are created when the block in entered or the function is called and destroyed after exiting from the block or when the call returns from the function.
+The scope of these variables exists only within the block in which the variable is declared. i.e. we can access these variable only within that block.
+Initialisation of Local Variable is Mandatory.
+Instance Variables: Instance variables are non-static variables and are declared in a class outside any method, constructor or block.
+As instance variables are declared in a class, these variables are created when an object of the class is created and destroyed when the object is destroyed.
+Unlike local variables, we may use access specifiers for instance variables. If we do not specify any access specifier then the default access specifier will be used.
+Initialisation of Instance Variable is not Mandatory. Its default value is 0
+Instance Variable can be accessed only by creating objects.
+
+
+Difference between Primary and Candidate Key
+Primary Key:
+Primary Key is a set of attributes (or attribute) which uniquely identify the tuples in a relation or table. Primary key is a minimal super key, so there is one and only one primary key in any relation. For example,
+Student{ID, F_name, M_name, L_name, Age} 
+Here only ID can be primary key because name, age and address can be same but ID can’t be same.
+Candidate Key:
+Candidate key is a set of attributes (or attribute) which uniquely identify the tuples in a relation or table. As we know that Primary key is a minimal super key, so there is one and only one primary key in any relation but There is more than one candidate key can take place. Candidate key’s attributes can contain NULL value which oppose to the primary key. For example,
+Student{ID, First_name, Last_name, Age} 
+Here we can see the two candidate keys ID and {First_name, Last_name, DOB}. So here, there are present more than one candidate keys, which can uniquely identifies a tuple in a relation.
+Differences Between Primary key and Unique key:
+Primary key will not accept NULL values whereas Unique key can accept one NULL value.
+A table can have only primary key whereas there can be multiple unique key on a table.
+A Clustered index automatically created when a primary key is defined whereas Unique key generates the non-clustered index.
+Difference between static and non-static method in Java
+
+
+
+
+
+Difference between Stack and Queue Data Structures
+
+
+
+
+Rest Vs Restful
+
+REST is architectural style and Restful implements Rest
+
+REST (REpresentational State Transfer) is basically an architectural style of development having some principles...
+It should be stateless
+It should access all the resources from the server using only URI
+It does not have inbuilt encryption
+It does not have session
+It uses one and only one protocol that is HTTP
+For performing CRUD operations, it should use HTTP verbs such as get, post, put and delete
+It should return the result only in the form of JSON or XML, atom, OData etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Difference between PULL and FETCH in GIT HUB
+
+
+difference between git and github
+
+Git is a revision control system, a tool to manage your source code history.
+GitHub is a hosting service for Git repositories.
+So they are not the same thing: Git is the tool, GitHub is the service for projects that use Git.
+
+
+Different between session.get() and session.load()
+Actually, both functions are use to retrieve an object with different mechanism, of course.
+
+1. session.load()
+It will always return a “proxy” (Hibernate term) without hitting the database. In Hibernate, proxy is an object with the given identifier value, its properties are not initialized yet, it just look like a temporary fake object.
+If no row found , it will throws an ObjectNotFoundException.
+
+
+
+
+2. session.get()
+It always hit the database and return the real object, an object that represent the database row, not proxy.
+If no row found , it return null.
+
+
+
+
+
+
+
+Life cycle of Hibernate methods:
+
+@Pathparam VS @PathVariable Vs @RequestParam
+
+@Pathparam 
+
+@PathParam is from JAX-RS.
+
+
+
+
+
+@PathParam is a parameter annotation which allows you to map variable URI path fragments into your method call.
+@Path("/employee")
+public class EmployeeService {
+ 
+    @GET
+    @Path("{empId}")
+    public Response getEmployeeById(@PathParam("empId") String empId){
+         
+        return Response.status(200).entity("Got employee with id : " + empId).build();
+    }
+     
+    @GET
+    @Path("{branch}/{department}")
+    public Response getEmployeeList(@PathParam("branch") String branchName,
+                                    @PathParam("department") String deptName){
+         
+        String resp = "Total number of employees in the "+deptName+" department from "
+                        +branchName+" is 100";
+        return Response.status(200).entity(resp).build();
+    }
+}@PathVariable:
+@PathVariable is from spring
+@PathVariable identifies the pattern that is used in the URI for the incoming request. Let’s look at the below request URL:
+http://localhost:8080/springmvc/hello/101?param1=10&amp;param2=20
+The above URL request can be written in your Spring MVC as below:
+@RequestMapping("/hello/{id}")
+	public String getDetails(@PathVariable(value="id") String id,
+	@RequestParam(value="param1", required=true) String param1,
+	@RequestParam(value="param2", required=false) String param2){
+.......
+}
+The @PathVariable annotation has only one attribute value for binding the request URI template. It is allowed to use the multiple @PathVariable annotation in the single method. But, ensure that no more than one method has the same pattern.
+
+
+
+@RequestParam:
+@RequestParam annotation used for accessing the query parameter values from the request. Look     at the following request URL:
+http://localhost:8080/springmvc/hello/101?param1=10&param2=20
+In the above URL request, the values for param1 and param2 can be accessed as below:
+public String getDetails(
+	@RequestParam(value="param1", required=true) String param1,
+        @RequestParam(value="param2", required=false) String param2){
+...
+}
+The following are the list of parameters supported by the @RequestParam annotation:
+defaultValue – This is the default value as a fallback mechanism if the request is not having the value or it is empty.
+name – Name of the parameter to bind
+required – Whether the parameter is mandatory or not. If it is true, failing to send that parameter will fail.
+value – This is an alias for the name attribute
+
+Abstraction Vs Encapsulation?
+
+Abstraction solves the problem at design level while Encapsulation solves it implementation level.
+Abstraction is about hiding unwanted details while giving out most essential details, while Encapsulation means hiding the code and data into a single unit e.g. class or method to protect inner working of an object from outside world. In other words, Abstraction means extracting common details or generalising things.
+we can say Encapsulation is a way to implement Abstraction.
+Abstraction is implemented in Java using interface and abstract class while Encapsulation is implemented using private, package-private and protected access modifier.
+Encapsulation is also called data hiding.
+Advantage of Abstraction
+By using abstraction, we can separate the things that can be grouped to another type.
+Frequently changing properties and methods can be grouped to a separate type so that the main type need not under go changes. This adds strength to the OOAD principle -“Code should be open for Extension but closed for Modification”.
+Simplifies the representation of the domain models.
+Advantage of Encapsulation
+Encapsulated Code is more flexible and easy to change with new requirements.
+Encapsulation makes unit testing easy.
+Encapsulation in Java allows you to control who can access what.
+It also helps to write immutable class in Java which are a good choice in multi-threading environment.
+Encapsulation reduce coupling of modules and increase cohesion inside a module because all piece of one thing are encapsulated in one place.
+Encapsulation allows you to change one part of code without affecting other part of code.
+
+Difference between abstract class and interface
+
+Abstract class and interface both are used to achieve abstraction where we can declare the abstract methods. Abstract class and interface both can't be instantiated.
+
+Simply, abstract class achieves partial abstraction (0 to 100%) whereas interface achieves fully abstraction (100%).
+
+
+
+
+
+Overriding vs. Overloading in Java
+Overloading:
+Overloading occurs when two or more methods in one class have the same method name but different parameters.
+If a class has multiple methods having same name but different in parameters, it is known as Method Overloading.
+If we have to perform only one operation, having same name of the methods increases the readability of the program.
+Suppose you have to perform addition of the given numbers but there can be any number of arguments, if you write the method such as a(int,int) for two parameters, and b(int,int,int) for three parameters then it may be difficult for you as well as other programmers to understand the behavior of the method because its name differs.
+You can perform overloading on static methods.
+In method overloading, private and final method can be overloaded in Java.
+Overloaded methods use static binding.
+Method overloading increases the readability of the program.
+Different ways to overload the method
+There are two ways to overload the method in java
+By changing number of arguments
+By changing the data type
+
