@@ -1,0 +1,17 @@
+[user]
+	email = sspkolle1991@gmail.com
+	name = Siddaramugithub
+[core]
+	editor = nano
+	ignorecase = true
+[alias]
+	co = checkout
+	b = branch
+[merge]
+	tool = kdiff3
+[diff]
+	external = vimdiff
+[push]
+	default = current
+[color]
+	ui = auto
